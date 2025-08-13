@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="PropertyManagement.Core"
+                   namespace="PropertyManagement.Core.Entities">
+    <class name="Right" table="Rights">
+        <id name="Id" type="Int64">
+            <generator class="identity"/>
+        </id>
+        <property name="Key" type="System.String">
+            <column name="R_Key"/>
+        </property>
+        <property name="Description"/>
+    </class>
+</hibernate-mapping>
+

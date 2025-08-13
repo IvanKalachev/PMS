@@ -1,0 +1,15 @@
+﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<PropertyManagement.Web.Models.ReportModel>" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta name="viewport" content="width=device-width" />
+    <title>View1</title>
+</head>
+<body>
+    <div>
+        
+    </div>
+</body>
+</html>

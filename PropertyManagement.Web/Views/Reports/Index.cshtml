@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Справки";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                | @Html.ActionLink("Актуално състояние", "CurrentStateReport", "Reports", null, new { @class="bold"}) |
+                @Html.ActionLink("Постъпления от апартаменти", "UnitPaymnetsReport", "Reports", null, new { @class = "bold" }) |
+            </hgroup>
+        </div>
+    </section>
+}
+
+<h3>Изберете справка от менюто по-горе &#8593;</h3>

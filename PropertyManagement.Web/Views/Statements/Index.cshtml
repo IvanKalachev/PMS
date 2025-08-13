@@ -1,0 +1,229 @@
+﻿@model PropertyManagement.Web.Models.StatementModel
+@{
+    ViewBag.Title = "Отчети - Property Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <span class="page_title">Отчети</span>
+            </hgroup>
+        </div>
+    </section>
+}
+Отчет за месец @Html.DropDownList("detectionId", (SelectList)ViewBag.Detections,
+              new { onchange = "document.location.href = '/Statements?detectionId='+this.options[this.selectedIndex].value;" })
+<input type="submit" value="Печат" onclick="openPrintReport()" />
+<br />
+<br />
+<table cellpadding="10px" width="450px">
+    <tr class="unit_unpaid_charge_header">
+        <td colspan="3" align="center">
+            @PropertyManagement.Web.Helpers.MonthsYears.GetMonth(Model.Detection.Month) @Model.Detection.Year
+        </td>
+    </tr>
+</table>
+<br />
+<table cellpadding="10px" width="450px" id="table_unit_charges">
+    <tr class="unpaid_unit_charge_header">
+        <td align="center" colspan="3">
+            П Р И Х О Д И
+        </td>
+    </tr>
+    @if (Model.Profits.Count > 0)
+    {
+        <tr class="unit_unpaid_charge_header">
+            <td colspan="3" align="center">
+                Месечни начисления
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span class="bold">Услуга</span>
+            </td>
+            <td>
+                <span class="bold">Сума</span> 
+            </td>
+        </tr>
+        foreach (var profit in Model.Profits)
+        {
+            <tr>
+                <td colspan="2">
+                    @profit.Service.Name
+                </td>
+                <td>
+                    @profit.Sum лв.
+                </td>
+            </tr>
+        }
+    }
+    @if (Model.PayedChargesForPreviousDetections.Count > 0)
+    {
+        <tr class="unit_unpaid_charge_header">
+            <td colspan="3" align="center">
+                Платени стари задължения
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="bold">Апартамент</span>
+            </td>
+            <td>
+                <span class="bold">Месец</span>
+            </td>
+            <td>
+                <span class="bold">Сума</span>
+            </td>
+        </tr>
+        foreach (var payedCharge in Model.PayedChargesForPreviousDetections)
+        {
+            <tr>
+                <td>
+                    @payedCharge.Unit.FamilyName ап. @payedCharge.Unit.Number ет. @payedCharge.Unit.Floor
+                </td>
+                <td>
+                    @PropertyManagement.Web.Helpers.MonthsYears.GetMonth(payedCharge.Detection.Month)
+                    @payedCharge.Detection.Year
+                </td>
+                <td>
+                    @payedCharge.Sum лв.
+                </td>
+            </tr>
+        }
+    }
+    @if (Model.NotpayedForDetection.Count > 0)
+    {
+        <tr class="unit_unpaid_charge_header">
+            <td colspan="3" align="center">
+                Не събрани задължения
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span class="bold">Апартамент</span>
+            </td>
+            <td>
+                <span class="bold">Сума</span>
+            </td>
+        </tr>
+        foreach (var notPayedCharge in Model.NotpayedForDetection)
+        {
+            <tr>
+                <td colspan="2">
+                    @notPayedCharge.Unit.FamilyName ап. @notPayedCharge.Unit.Number ет. @notPayedCharge.Unit.Floor
+                </td>
+                <td>
+                    @notPayedCharge.Sum лв.
+                </td>
+            </tr>
+        }
+        foreach (var notPayedChargeInCurrentDet in Model.NotpayedForDetectionAndPaiedInOtherDet)
+        {
+            <tr>
+                <td colspan="2">
+                    @notPayedChargeInCurrentDet.Unit.FamilyName ап. @notPayedChargeInCurrentDet.Unit.Number ет. @notPayedChargeInCurrentDet.Unit.Floor
+                </td>
+                <td>
+                    @notPayedChargeInCurrentDet.Sum лв.
+                </td>
+            </tr>
+        }
+    }
+    <tr class="full_incomes_footer">
+        <td colspan="3" align="center">
+            Общо приходи:
+            @Model.TotalPrihodi лв.
+        </td>
+    </tr>
+</table>
+<br />
+<table cellpadding="10px" width="450px" id="table_unit_charges">
+    <tr class="unpaid_unit_charge_header">
+        <td align="center" colspan="3">
+            Р А З Х О Д И
+        </td>
+    </tr>
+    @if (Model.Costs.Count > 0)
+    {
+        <tr class="unit_unpaid_charge_header">
+            <td colspan="3" align="center">
+                Месечни начисления
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span class="bold">Услуга</span>
+            </td>
+            <td>
+                <span class="bold">Сума</span> 
+            </td>
+        </tr>
+        foreach (var profit in Model.Costs)
+        {
+            <tr>
+                <td colspan="2">
+                    @profit.Service.Name
+                </td>
+                <td>
+                    @profit.Sum лв.
+                </td>
+            </tr>
+        }
+    }
+    @if (Model.ExtraExpensesForDetection.Count > 0)
+    {
+        <tr class="unit_unpaid_charge_header">
+            <td colspan="3" align="center">
+                Извънредни разходи
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span class="bold">Услуга</span>
+            </td>
+            <td>
+                <span class="bold">Сума</span>
+            </td>
+        </tr>
+        foreach (var extraExpense in Model.ExtraExpensesForDetection)
+        {
+            <tr>
+                <td colspan="2">
+                    @extraExpense.Service.Name
+                </td>
+                <td>
+                    @extraExpense.Sum лв.
+                </td>
+            </tr>
+        }
+    }
+    
+    <tr class="full_incomes_footer">
+        <td colspan="3" align="center">
+            Общо разходи:
+            @Model.TotalRazhodi лв.
+        </td>
+    </tr>
+</table>
+<br />
+<br />
+<div class="unpaid_total" style="background-color: Green">
+     Общо приходи: @Model.TotalPrihodi лв.
+</div>
+<div class="unpaid_total" style="background-color: #C00000">
+       Общо разходи: @Model.TotalRazhodi лв.
+</div>
+<div class="unpaid_total">
+     Остатък: @Model.RemainingSum лв.
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        function openPrintReport() {
+            window.open("Statements/PrintMonthStatement?detectionId=" + @Model.Detection.Id , "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=5, width=648, height=728, toolbar=no, titlebar=no");
+        }
+
+    </script>
+}

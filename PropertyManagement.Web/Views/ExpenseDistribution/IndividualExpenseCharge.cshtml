@@ -1,0 +1,121 @@
+﻿@model PropertyManagement.Web.Models.ExpenseModel
+@{
+    ViewBag.Title = "Начисляване на задължение - Property Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (@Html.BeginForm("ChargeIndividualExpense", "ExpenseDistribution"))
+{
+    @Html.HiddenFor(model => model.Id)
+    if (Model.IsDistributed == false)
+    {
+        <h2>Начисляване на приход</h2>
+        <table>
+            <tr>
+                <td>
+                    <div class="expenseDistribution">
+                        Начисляване на приход "@Model.Service.Name" за месец @PropertyManagement.Web.Helpers.MonthsYears.GetMonth(Model.Detection.Month)
+                        @Model.Detection.Year
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="expenseDistribution">
+                        Собственик / апартамент: @Model.Unit.FamilyName
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="expenseDistribution">
+                        Сума: @Model.Sum лв.
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+    else
+    {
+        <h2>Начислен приход</h2>
+        <table>
+            <tr>
+                <td>
+                    <div class="expenseDistribution">
+                        "@Model.Service.Name" за месец @PropertyManagement.Web.Helpers.MonthsYears.GetMonth(Model.Detection.Month)
+                        @Model.Detection.Year
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+    <table id="expense_distribution">
+        <tr>
+            <th width="10%">
+                Ап.№
+            </th>
+            <th width="20%">
+                Собственик
+            </th>
+            <th width="15%">
+                Брой обитатели
+            </th>
+            <th width="15%">
+                % идеални части
+            </th>
+            <th width="10%">
+                Етаж
+            </th>
+            <th width="15%">
+                <span class="expenseDistribution">Сума</span>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(m => m.Unit.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(m => m.Unit.FamilyName)
+            </td>
+            <td>
+                @Html.DisplayFor(m => m.Unit.MembersCount)
+            </td>
+            <td>
+                @Model.Unit.PercentIdealParts
+            </td>
+            <td>
+                @Html.DisplayFor(m => m.Unit.Floor)
+            </td>
+            <td>
+                <span class="red">@Html.DisplayFor(m => m.Sum) лв.</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" style="background-color: Silver; font-weight: bold; padding: 5px;
+                padding-right: 100px" align="right">
+                <span class="red">Общо: @Model.Sum лв.</span>
+            </td>
+        </tr>
+        @if (Model.IsDistributed == false)
+        {
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <input type="submit" value="Начисли" />
+                </td>
+            </tr>
+        }
+    </table>
+}
+<br />
+@Html.ActionLink("<<< Обратно към задълженията", "Index", "Expenses", new { detectionId = @Model.Detection.Id }, null)

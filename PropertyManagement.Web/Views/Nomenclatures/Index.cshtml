@@ -1,0 +1,117 @@
+﻿@using GridMvc.Html
+@model PropertyManagement.Web.Models.NomenclaturesModel
+@{
+    ViewBag.Title = "Номенклатури - Property Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <span class="page_title">Номенклатури - добавяне на отчетни периоди, добавяне / редактиране на услуги</span>
+            </hgroup>
+        </div>
+    </section>
+}
+
+@Html.Partial("DetectionsPartial", Model.Detections)
+<br />
+<div class="panel">
+    <fieldset>
+        <legend>Услуги </legend>
+        @using (Html.BeginForm("AddService", "Nomenclatures"))
+        {
+            @Html.ValidationSummary(true)
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("Име на услугата:", new { @class = "bold" })
+                        @Html.EditorFor(model => model.AddedService, new { style = "width: 500px !important;" }) <br />
+                        @Html.ValidationMessageFor(model => model.AddedService)
+                    </td>
+                    <td>
+                        @Html.Label("Стандартен начин на начисляване:", new { @class = "bold" })
+                        @Html.DropDownList("AddedServiceChargeType", (SelectList)ViewBag.ChargeTypes, new { style = "width: 300px;" })
+                    </td>
+                    <td>
+                        <br />
+                        @Html.CheckBoxFor(model => model.AddedServiceIsProfit, new { @class = "add_service", id = "ad_s_profit" }) Приход
+                    </td>
+                    <td>
+                        <br />
+                        @Html.CheckBoxFor(model => model.AddedServiceIsCost, new { @class = "add_service", id = "ad_s_cost" }) Разход
+                    </td>
+                    <td>
+                        <br />
+                        <input type="submit" value="Добави" />
+                    </td>
+                </tr>
+            </table>
+        }
+        <hr />
+        @using (Html.BeginForm("SaveServices", "Nomenclatures"))
+        {
+            <table>
+                @for (int i = 0; i < Model.Services.Count; i++)
+                {
+                    var alterniting = "";
+                    if (i % 2 != 0)
+                    {
+                        alterniting = "alter";
+                    }
+                    
+                    <tr class=@alterniting>
+                        <td>
+                            @Html.HiddenFor(x => x.Services[i].Id)
+                            @Html.EditorFor(x => x.Services[i].Name)
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(x => x.Services[i].ChargeType.Id, new SelectList(Model.ChargeTypes, "Id", "Name", Model.Services[i].ChargeType.Id), new { style = "width: 300px;" })
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(x => x.Services[i].IsProfit, new { @checked = Model.Services[i].IsProfit, id = "p_" + i, @class = "checkb" }) Приход
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(x => x.Services[i].IsCost, new { @checked = Model.Services[i].IsCost, id = "c_"+i, @class="checkb"}) Разход
+                        </td>
+                    </tr>
+                }
+            </table>
+            <br />
+            <input type="submit" value="Запис" />
+        }
+    </fieldset>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+//        $('.checkb').click(function () {
+//            var clickedCheckBox = $(this);
+//            var clickedCheckBoxId = clickedCheckBox.attr('id');
+//            var rowId = clickedCheckBoxId.slice(2);
+
+//            var isProfit = false;
+//            var isCost = false;
+
+//            if (clickedCheckBoxId.indexOf("p") != -1) {
+//                isProfit = true;
+//            } else {
+//                isCost = true;
+//            }
+
+//            if (isProfit) {
+//                $("#c_" + rowId).attr('checked', false);
+//            } else if (isCost) {
+//                $("#p_" + rowId).attr('checked', false);
+//            }
+//        });
+
+//        $('.add_service').click(function () {
+//            if ($(this).attr("id") == "ad_s_profit") {
+//                $('#ad_s_cost').attr('checked', false);
+//            } else {
+//                $('#ad_s_profit').attr('checked', false);
+//            }
+//        });
+    </script>
+}

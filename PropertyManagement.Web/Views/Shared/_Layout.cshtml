@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" type="text/css" />
+       @* <link href="@Url.Content("~/Content/Reports.css")" rel="stylesheet" type="text/css" />*@
+	    <script src="@Url.Content("~/Scripts/Gridmvc.min.js")" type="text/javascript"> </script>
+	 @*   <script src="@Url.Content("~/Scripts/bootstrap.min.js")" type="text/javascript"> </script>*@
+        @*<link href="@Url.Content("~/Content/bootstrap-theme.css")" rel="stylesheet" type="text/css" />*@
+        @*<link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" />*@
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <div class="site-title">@Html.ActionLink(System.Configuration.ConfigurationManager.AppSettings["propertyName"], "Index", "Home")</div>
+                </div>
+                <section id="login">
+                        @Html.Partial("_LoginPartial")
+                </section>
+                <div class="float-right">
+                   <nav>
+                   @if (Request.IsAuthenticated)
+                   {
+                        <ul id="menu">
+                            <li>@Html.ActionLink("Статистика", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Апартаменти", "Index", "Units")</li>
+                            <li>@Html.ActionLink("Задължения", "Index", "Expenses")</li>
+                            <li>@Html.ActionLink("Постъпления", "Index", "Incomes")</li>
+                            <li>@Html.ActionLink("Отчети", "Index", "Statements")</li>
+                            <li>@Html.ActionLink("Номенклатури", "Index", "Nomenclatures")</li>
+                            <li>@Html.ActionLink("Справки", "Index", "Reports")</li>
+                        </ul>
+                   }
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>Property Management ver. @ViewContext.Controller.GetType().Assembly.GetName().Version.ToString() by Ivan Kalachev &copy; @DateTime.Now.Year</p>
+                </div>
+            </div>
+        </footer>
+
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

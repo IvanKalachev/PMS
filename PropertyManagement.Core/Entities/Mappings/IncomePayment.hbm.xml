@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="PropertyManagement.Core"
+                   namespace="PropertyManagement.Core.Entities">
+    <class name="IncomePayment" table="IncomesPayment">
+        <id name="Id" type="Int64">
+            <generator class="identity"/>
+        </id>
+        <many-to-one name="Detection" column="DetectionId" class="PropertyManagement.Core.Entities.Detection, PropertyManagement.Core" />
+        <many-to-one name="Unit" column="UnitId" class="PropertyManagement.Core.Entities.Unit, PropertyManagement.Core" />
+        <property name="PayedSum" />
+        <property name="PayDate" />
+        <bag name="PayedCharges" table="IncomesPayments_PayedExpenses" lazy="true">
+            <key>
+                <column name="IncomePaymentId" />
+            </key>
+            <many-to-many class="UnitCharge">
+                <column name="UnitChargeId" />
+            </many-to-many>
+        </bag>
+    </class>
+</hibernate-mapping>

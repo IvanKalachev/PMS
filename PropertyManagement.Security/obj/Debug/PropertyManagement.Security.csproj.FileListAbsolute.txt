@@ -1,0 +1,6 @@
+C:\Projects\NewPms\NewPms\PropertyManagement.Web\PropertyManagement.Security\bin\Debug\PropertyManagement.Security.dll
+C:\Projects\NewPms\NewPms\PropertyManagement.Web\PropertyManagement.Security\bin\Debug\PropertyManagement.Security.pdb
+C:\Projects\NewPms\NewPms\PropertyManagement.Web\PropertyManagement.Security\bin\Debug\GridMvc.dll
+C:\Projects\NewPms\NewPms\PropertyManagement.Web\PropertyManagement.Security\obj\Debug\PropertyManagement.Security.csprojResolveAssemblyReference.cache
+C:\Projects\NewPms\NewPms\PropertyManagement.Web\PropertyManagement.Security\obj\Debug\PropertyManagement.Security.dll
+C:\Projects\NewPms\NewPms\PropertyManagement.Web\PropertyManagement.Security\obj\Debug\PropertyManagement.Security.pdb

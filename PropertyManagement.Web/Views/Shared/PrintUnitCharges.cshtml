@@ -1,0 +1,77 @@
+﻿@model IList<PropertyManagement.Web.Models.UnitUnpaidChargesModel>
+@{
+    ViewBag.Title = "Принтиране неплатени задължения - Property Management";
+    Layout = "~/Views/Shared/_PrintLayout.cshtml";
+}
+
+<h2>@System.Configuration.ConfigurationManager.AppSettings["propertyName"]</h2>
+<h2>@ViewBag.ReportTitle</h2>
+
+<input type="submit" value="Принтирай" onclick="window.print()" id="print_button" />
+
+@foreach (var charge in Model)
+{
+    <table width="450px" id="table_unit_charges">
+        <tr>
+            <td colspan="3" align="center" class="bold">
+                @PropertyManagement.Web.Helpers.MonthsYears.GetMonth(charge.Detection.Month) @charge.Detection.Year
+            </td>
+        </tr>
+        <tr class="bold">
+            <td width="56%">
+                Услуга
+            </td>
+            <td width="22%">
+                Сума
+            </td>
+            <td width="22%">
+                Платено
+            </td>
+        </tr>
+        @foreach (var ch in charge.Charges)
+        {
+            <tr>
+                <td>
+                    @ch.Expense.Service.Name
+                </td>
+                 <td>
+                    @ch.SumToPay лв.
+                </td>
+                <td>
+                    @ch.PayedSum лв.
+                </td>
+            </tr>
+            
+        }
+        <tr class="bold">
+            <td align="right">
+                Общо
+            </td>
+            <td>
+                @charge.ChargesTotal лв.
+            </td>
+            <td>
+                @charge.PaidTotal лв.
+            </td>
+        </tr>
+    </table>
+    <br />
+}
+<br />
+@{var totalSum = Model.Sum(x => x.Charges.Sum(y => y.SumToPay)); }
+@{var payedSum = Model.Sum(x => x.Charges.Sum(y => y.PayedSum)); }
+@{var remainTopay = totalSum - payedSum; }
+
+<div class="total">
+Общо дължима сума: @totalSum лв.
+</div>
+
+<div class="total">
+Общо платено: @payedSum лв.
+</div>
+
+<div class="total">
+Оставащо за плащане: @remainTopay лв.
+</div>
+
+@Html.Partial("_PrintFooter")

@@ -1,0 +1,20 @@
+﻿@model PropertyManagement.Web.Models.ReportModel
+
+<table>
+    <tr>
+        <td>
+            От месец:<br />
+            @Html.DropDownList("fromDetection", (SelectList)Model.Detections, new { id = "fromDetection"})
+        </td>
+        <td>
+            До месец:<br />
+            @Html.DropDownList("toDetection", (SelectList)Model.Detections, new { id = "toDetection" })
+        </td>
+        <td>
+            Апартамент: <br />
+            @Html.DropDownList("unitId", (SelectList)Model.Units)
+        </td>
+    </tr>
+</table>
+
+ 

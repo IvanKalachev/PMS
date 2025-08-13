@@ -1,0 +1,76 @@
+﻿@model List<PropertyManagement.Core.Entities.UnitCharge>
+
+
+@{
+    ViewBag.Title = "Преглед на разпределние на разход - Property Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{var expense = Model.FirstOrDefault().Expense;}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <span class="expenseDistribution">Разпределение на разход "@expense.Service.Name" за месец @PropertyManagement.Web.Helpers.MonthsYears.GetMonth(expense.Detection.Month) @expense.Detection.Year</span>
+                 <div class="expenseDistribution">
+                    Сума: @expense.Sum лв.
+                </div>
+            </hgroup>
+        </div>
+    </section>
+}
+<table id="expense_distribution">
+        <tr>
+            <th width="10%">
+                Ап.№
+            </th>
+            <th width="20%">
+                Собственик
+            </th>
+            <th width="15%">
+                Брой обитатели
+            </th>
+            <th width="15%">
+                % идеални части
+            </th>
+            <th width="10%">
+                Етаж
+            </th>
+            <th width="15%">
+                <span class="expenseDistribution">Сума</span>
+            </th>
+        </tr>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => m[i].Unit.Number) 
+                </td>
+                <td>
+                    @Html.DisplayFor(m => m[i].Unit.FamilyName) 
+                </td>
+                <td>
+                    @Html.DisplayFor(m => m[i].Unit.MembersCount)
+                </td>
+                <td>
+                    @Model[i].Unit.PercentIdealParts
+                </td>
+                <td>
+                    @Html.DisplayFor(m => m[i].Unit.Floor)
+                </td>
+                <td>
+                    <span class="red">@Model[i].SumToPay лв.</span>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="6" style="background-color: Silver; font-weight: bold; padding: 5px; padding-right:100px" 
+                align="right">
+                <span class="red">Общо: @Model.Sum(x => x.SumToPay) лв.</span>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <div class="bold">
+        @Html.ActionLink("<<< Обратно към задълженията", "Index", "Expenses", new { detectionId = @expense.Detection.Id }, null)
+    </div>

@@ -1,0 +1,60 @@
+﻿@model List<PropertyManagement.Web.Models.DetectionModel>
+
+@{
+    ViewBag.Title = "Отчетни периоди - Property Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <span class="page_title">Отчетни периоди - преглед / добавяне</span>
+            </hgroup>
+        </div>
+    </section>
+}
+
+@if (ViewBag.Error != null)
+{
+    @Html.Partial("_InfoPartial", (PropertyManagement.Web.Models.ErrorModel)ViewBag.Error);
+}
+
+@using (Html.BeginForm("Create", "Detections"))
+{
+    @Html.ValidationSummary(true)
+<table>
+    <tr>
+        <td>
+             Месец: @Html.DropDownList("Month", (SelectList)ViewBag.MonthsList, new { style = "width:150px"})
+        </td>
+        <td>
+            Година: @Html.DropDownList("Year", (SelectList)ViewBag.YearsList, new { style = "width:150px"}) 
+        </td>
+        <td>
+            <input type="submit" value="Добави" />
+        </td>
+    </tr>
+</table>
+}
+<hr />
+<table cellpadding="5px" id="detections_table">
+    <tr>
+        <th>
+            месец
+        </th>
+        <th>
+            година
+        </th>
+    </tr>
+    @foreach (var detection in Model)
+    {
+        <tr>
+            <td>
+                @Html.Label(PropertyManagement.Web.Helpers.MonthsYears.GetMonth(detection.Month))
+            </td>
+            <td>
+                @Html.Label(detection.Year.ToString())
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyManagement.Web", "PropertyManagement.Web\PropertyManagement.Web.csproj", "{30A4EEF5-4FDF-4F79-9E3D-61E4362CD245}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyManagement.Core", "PropertyManagement.Core\PropertyManagement.Core.csproj", "{ED2C967F-EA36-4B05-B5A5-91F6ED0E81C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyManagement.Security", "PropertyManagement.Security\PropertyManagement.Security.csproj", "{63F47ED3-0140-4FCF-B517-13298ACEF98F}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://ivaan.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = PropertyManagement.Core\\PropertyManagement.Core.csproj
+		SccProjectName1 = PropertyManagement.Core
+		SccLocalPath1 = PropertyManagement.Core
+		SccProjectUniqueName2 = PropertyManagement.Security\\PropertyManagement.Security.csproj
+		SccProjectName2 = PropertyManagement.Security
+		SccLocalPath2 = PropertyManagement.Security
+		SccProjectUniqueName3 = PropertyManagement.Web\\PropertyManagement.Web.csproj
+		SccProjectName3 = PropertyManagement.Web
+		SccLocalPath3 = PropertyManagement.Web
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30A4EEF5-4FDF-4F79-9E3D-61E4362CD245}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30A4EEF5-4FDF-4F79-9E3D-61E4362CD245}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30A4EEF5-4FDF-4F79-9E3D-61E4362CD245}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30A4EEF5-4FDF-4F79-9E3D-61E4362CD245}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED2C967F-EA36-4B05-B5A5-91F6ED0E81C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED2C967F-EA36-4B05-B5A5-91F6ED0E81C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED2C967F-EA36-4B05-B5A5-91F6ED0E81C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED2C967F-EA36-4B05-B5A5-91F6ED0E81C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63F47ED3-0140-4FCF-B517-13298ACEF98F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63F47ED3-0140-4FCF-B517-13298ACEF98F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63F47ED3-0140-4FCF-B517-13298ACEF98F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63F47ED3-0140-4FCF-B517-13298ACEF98F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,50 @@
+﻿@model List<PropertyManagement.Web.Models.DetectionModel>
+<div class="panel">
+    <fieldset>
+        <legend>Отчетни периоди</legend>
+        @if (ViewBag.Error != null)
+        {
+            @Html.Partial("_InfoPartial", (PropertyManagement.Web.Models.ErrorModel)ViewBag.Error);
+        }
+        @using (Html.BeginForm("CreateDetection", "Nomenclatures"))
+        {
+            @Html.ValidationSummary(true)
+            <table>
+                <tr>
+                    <td>
+                        Месец: @Html.DropDownList("Month", (SelectList)ViewBag.MonthsList, new { style = "width:150px" })
+                    </td>
+                    <td>
+                        Година: @Html.DropDownList("Year", (SelectList)ViewBag.YearsList, new { style = "width:150px" })
+                    </td>
+                    <td>
+                        <input type="submit" value="Добави" />
+                    </td>
+                </tr>
+            </table>
+        }
+        <hr />
+        <table cellpadding="5px" id="detections_table">
+            <tr>
+                <th width="70%">
+                    месец
+                </th>
+                <th widdth="30%">
+                    година
+                </th>
+            </tr>
+            @foreach (var detection in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.Label(PropertyManagement.Web.Helpers.MonthsYears.GetMonth(detection.Month))
+                    </td>
+                    <td>
+                        @Html.Label(detection.Year.ToString())
+                    </td>
+                </tr>
+            }
+        </table>
+         <br />
+    </fieldset>
+</div>

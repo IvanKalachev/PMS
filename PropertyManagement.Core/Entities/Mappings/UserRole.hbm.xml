@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="PropertyManagement.Core"
+                   namespace="PropertyManagement.Core.Entities">
+    <class name="UserRole" table="Roles">
+        <id name="Id" type="Int64">
+            <generator class="identity"/>
+        </id>
+        <property name="RoleName"/>
+        <property name="Description" />
+        <bag name="Rights" table="RolesRights" cascade="save-update">
+            <key column="RoleId"/>
+            <many-to-many column="RightId"
+                class="Right"/>
+        </bag>
+        <bag name="Users" table="UsersInRoles" cascade="save-update">
+            <key column="RoleId"/>
+            <many-to-many column="UserId"
+                class="User"/>
+        </bag>
+    </class>
+</hibernate-mapping>

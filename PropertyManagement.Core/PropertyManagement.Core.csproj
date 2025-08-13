@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ED2C967F-EA36-4B05-B5A5-91F6ED0E81C1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PropertyManagement.Core</RootNamespace>
+    <AssemblyName>PropertyManagement.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dao\BaseDao.cs" />
+    <Compile Include="Dao\ChargeTypeDao.cs" />
+    <Compile Include="Dao\IncomePaymentDao.cs" />
+    <Compile Include="Dao\ExpenseDao.cs" />
+    <Compile Include="Dao\DetectionDao.cs" />
+    <Compile Include="Dao\ResMoneyDao.cs" />
+    <Compile Include="Dao\ServiceDao.cs" />
+    <Compile Include="Dao\UnitChargeDao.cs" />
+    <Compile Include="Dao\UnitDao.cs" />
+    <Compile Include="Entities\ChargeType.cs" />
+    <Compile Include="Entities\Detection.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Expense.cs" />
+    <Compile Include="Entities\IncomePayment.cs" />
+    <Compile Include="Entities\ResMoney.cs" />
+    <Compile Include="Entities\Right.cs" />
+    <Compile Include="Entities\Service.cs" />
+    <Compile Include="Entities\Unit.cs" />
+    <Compile Include="Entities\UnitCharge.cs" />
+    <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\UserRole.cs" />
+    <Compile Include="ExpenseType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserMebership.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Entities\Mappings\Unit.hbm.xml" />
+    <EmbeddedResource Include="Entities\Mappings\Right.hbm.xml" />
+    <EmbeddedResource Include="Entities\Mappings\User.hbm.xml" />
+    <EmbeddedResource Include="Entities\Mappings\UserRole.hbm.xml" />
+    <EmbeddedResource Include="Entities\Mappings\Detection.hbm.xml" />
+    <EmbeddedResource Include="Entities\Mappings\Service.hbm.xml" />
+    <EmbeddedResource Include="Entities\Mappings\ChargeType.hbm.xml" />
+    <EmbeddedResource Include="Entities\Mappings\Expense.hbm.xml" />
+    <EmbeddedResource Include="Entities\Mappings\UnitCharge.hbm.xml" />
+    <EmbeddedResource Include="Entities\Mappings\IncomePayment.hbm.xml" />
+    <EmbeddedResource Include="Entities\Mappings\ResMoney.hbm.xml" />
+    <Content Include="Scripts\dbUpdate02.sql" />
+    <Content Include="Scripts\dbUpdate01.sql" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

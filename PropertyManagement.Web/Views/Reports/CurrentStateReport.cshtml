@@ -1,0 +1,90 @@
+﻿@model PropertyManagement.Web.Models.ReportModel
+
+@{
+    ViewBag.Title = "CurrentState";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                | <span class="bold">Актуално състояние</span> |
+                @Html.ActionLink("Постъпления от апартаменти", "UnitPaymnetsReport", "Reports", null, new { @class = "bold" }) |
+            </hgroup>
+        </div>
+    </section>
+}
+<div class="report_error">
+    <div class="error">
+        <span id="error_txt"></span>
+    </div>
+</div>
+
+@using (Ajax.BeginForm("GenerateCurrentStateReport", "Reports", new AjaxOptions { UpdateTargetId = "report", InsertionMode = InsertionMode.Replace, HttpMethod = "POST" }))
+{
+    @Html.Partial("_ReportHeader", Model)
+    <br />
+    
+    <input type="submit" value="Генерирай справка" id="submit_button" />
+    <input type="button" value="Печат" id="print_button" onclick="openPrintReport()"/>
+    
+    <div id="report">
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+        $("#fromDetection").change(function () {
+            checkPeriod();
+        });
+        $("#toDetection").change(function () {
+            checkPeriod();
+        });
+
+        function checkPeriod() {
+            var fromDet = $("#fromDetection").val();
+            var toDet = $("#toDetection").val();
+            var serviceURL = '/Reports/CheckReportPeriod/';
+
+            var json = { fromMonth: fromDet, toMonth: toDet };
+
+            $.ajax({
+                type: "POST",
+                url: serviceURL,
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: successFunc,
+                error: errorFunc
+            });
+
+            function successFunc(data, status) {
+                if (data.Success == "True") {
+                    $(".report_error").hide();
+                    $("#submit_button").show();
+                    $("#print_button").show()
+                } else {
+                    $(".report_error").show();
+                    $("#error_txt").html(data.Message);
+                    $("#submit_button").hide();
+                    $("#print_button").hide()
+                }
+            }
+
+            function errorFunc() {
+                //alert('error');
+            }
+        }
+
+        function openPrintReport() {
+            var fromDet = $("#fromDetection").val();
+            var toDet = $("#toDetection").val();
+            var unitId = $("#unitId").val();
+            window.open("PrintCurrentStateReport?unitId=" + unitId + "&fromDet=" + fromDet + "&toDet=" + toDet, "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=5, width=648, height=728, toolbar=no, titlebar=no");
+        }
+   
+    </script>
+}

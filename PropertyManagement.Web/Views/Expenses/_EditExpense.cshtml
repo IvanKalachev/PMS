@@ -1,0 +1,36 @@
+﻿@model PropertyManagement.Web.Models.ExpenseModel
+
+@{string row_id = "expense_row_" + Model.getId();}
+
+@using (Ajax.BeginForm("EditExpense", "Expenses",
+                        new AjaxOptions { UpdateTargetId = row_id, HttpMethod = "POST", InsertionMode = InsertionMode.Replace, OnComplete = "updateSaldo" },
+                        new { @id = "form_" + row_id }))
+{
+    <div class="table_expenses" id="@row_id" style="background: #CCFFCC; font-size:14px">
+        <div class="cell_expense_service">
+            @Html.HiddenFor(model => model.ExpenseType)
+            @if (Model.ExpenseType == 1)
+            {
+                @Html.DropDownListFor(model => model.Service.Id, (SelectList)ViewBag.Services)
+            }
+            else if(Model.ExpenseType == 2)
+            {
+                @Html.DisplayFor(m => m.IndividualServiceName) 
+            }
+            else if(Model.ExpenseType == 3)
+            {
+                <span class="extra_service">@Html.DisplayFor(m => m.Service.Name) * extra</span>
+            }
+        </div>
+        <div class="cell_expense_sum">
+            <div class="numeric">
+                @Html.EditorFor(model => model.Sum)
+            </div>
+        </div>
+        <div class="cell_expense_options">
+            @*@Ajax.ActionLink("Save", "EditExpense", "Expenses", new AjaxOptions { UpdateTargetId=row_id, HttpMethod = "POST" }) | Изтрий | Разпредели*@
+            @*<a href="javascript:document.getElementById('form_@row_id').submit()">Save</a>*@
+            <input type="submit" value="Запис" />
+        </div>
+    </div>
+}

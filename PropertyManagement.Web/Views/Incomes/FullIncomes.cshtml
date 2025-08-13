@@ -1,0 +1,65 @@
+﻿@model Object
+
+@{
+    ViewBag.Title = "Преглед на постъпления - подробна разбивка по видове разходи";
+    Layout = "~/Views/Shared/_FullIncomesLayout.cshtml";
+}
+
+ 
+
+<table>
+    <tr>
+        <td>
+            <h2>Постъпления - @ViewBag.Month</h2>
+        </td>
+        <td>
+             <br />
+            <input type="submit" value="Печат" onclick="openPrintReport()" />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            @Html.ActionLink("<< Върни се обратно", "Index", "Incomes", new { detectionId = ViewBag.DetectionId }, new { @class = "bold"} )
+        </td>
+    </tr>
+</table>
+
+@Html.Raw(Model)
+
+@{var incomes = ViewBag.Incomes as IList<PropertyManagement.Web.Models.IncomesModel>;}
+<br />
+<br />
+<table cellpadding="10px">
+    <tr>
+        <th>
+            Общо постъпления
+        </th>
+        <th>
+            Планирани
+        </th>
+        <th>
+            Получени
+        </th>
+    </tr>
+    <tr class="full_incomes_footer">
+        <td>
+            Вноски живущи
+        </td>
+        <td>
+            @incomes.Sum(x => x.SumToPay) лв.
+        </td>
+        <td>
+            @incomes.Sum(x => x.PayedSum) лв.
+        </td>
+    </tr>
+</table>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        function openPrintReport() {
+            window.open("PrintFullIncomes?detectionId=" + @ViewBag.DetectionId, "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=5, width=1024, height=1024, toolbar=no, titlebar=no");
+        }
+
+    </script>
+}

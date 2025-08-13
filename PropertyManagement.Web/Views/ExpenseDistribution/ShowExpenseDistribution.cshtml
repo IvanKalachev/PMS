@@ -1,0 +1,113 @@
+﻿@model PropertyManagement.Web.Models.DistributeExpenseModel
+@{
+    ViewBag.Title = "Разпределяне на разход - Property Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <span class="expenseDistribution">Разпределение на разход "@Model.Expense.Service.Name" за месец @Model.Expense.GetMonthYear()</span>
+            </hgroup>
+        </div>
+    </section>
+}
+@using (Html.BeginForm("DistributeAndSave", "ExpenseDistribution"))
+{
+    @Html.Hidden("expenseId", Model.Expense.Id)
+    <table>
+        <tr>
+            <td>
+                <span class="expenseDistribution">Метод за разпределение:</span>
+                @Html.DropDownList("chargeType", (SelectList)ViewBag.ChargeTypesList,
+                                             new { onchange = "document.location.href = '/ExpenseDistribution/ShowExpenseDistribution/" + Model.Expense.Id.ToString() + "/?chargeType='+this.options[this.selectedIndex].value;" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="expenseDistribution">
+                    Сума: @Model.Expense.Sum лв.
+                </div>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table id="expense_distribution">
+        <tr>
+            <th width="11%">
+                Ап.№
+            </th>
+            <th width="21%">
+                Собственик
+            </th>
+            <th width="21%">
+                Брой обитатели
+            </th>
+            <th width="21%">
+                % идеални части
+            </th>
+            <th width="12%">
+                Етаж
+            </th>
+            <th width="13%">
+                <span class="expenseDistribution">Сума</span>
+            </th>
+        </tr>
+        @for (int i = 0; i < Model.Units.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => m.Units[i].Number) 
+                    @Html.HiddenFor(m => m.Units[i].Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => m.Units[i].FamilyName) 
+                </td>
+                <td>
+                    @Html.DisplayFor(m => m.Units[i].MembersCount)
+                </td>
+                <td>
+                    @Model.Units[i].PercentIdealParts
+                </td>
+                <td>
+                    @Html.DisplayFor(m => m.Units[i].Floor)
+                </td>
+                <td>
+                    <span class="red">@Model.Units[i].ChargedSum лв.</span>
+                </td>
+            </tr>
+        }
+        <tr class="full_incomes_footer">
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+                @Model.Units.Sum(x => x.MembersCount)
+            </td>
+            <td>
+                @Model.Units.Sum(x => x.PercentIdealParts)
+            </td>
+            <td>
+            </td>
+            <td>
+                <span class="red">@Model.Units.Sum(x => x.ChargedSum) лв.</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+                <input type="submit" value="Разпредели" />
+            </td>
+        </tr>
+    </table>
+}

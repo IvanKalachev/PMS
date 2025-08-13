@@ -1,0 +1,65 @@
+﻿@model PropertyManagement.Web.Models.ExpenseModel
+
+    @{string row_id = "expense_row_" + Model.getId();}
+    <div class="table_expenses" id="@row_id" style="font-size:16px">
+        <div class="cell_expense_service">
+            @Html.HiddenFor(model => model.ExpenseType)
+            
+            @if (Model.ExpenseType == 2)
+            {
+                @Html.DisplayFor(model => model.IndividualServiceName)
+            }
+            else if(Model.ExpenseType == 1)
+            {
+                @Html.DisplayFor(model => model.Service.Name)
+            }
+            else if (Model.ExpenseType == 3)
+            {
+                <spam class="extra_service">@Html.DisplayFor(model => model.Service.Name) *extra</spam>
+            }
+        </div>
+        <div class="cell_expense_sum">
+            @Html.DisplayFor(model => model.Sum) лв.
+        </div>
+        <div class="cell_expense_options">
+            @if (!Model.IsDistributed)
+            {
+                if (Model.ExpenseType == 1)
+                {
+                    @Html.ActionLink("Разпредели", "ShowExpenseDistribution", "ExpenseDistribution", new { id = Model.getId() }, null)
+                }
+                else if (Model.ExpenseType == 2)
+                {
+                    @Html.ActionLink("Начисли", "ShowIndividualExpense", "ExpenseDistribution", new { expenseId = Model.getId() }, null)
+                }
+                
+                @Ajax.ActionLink("Промяна", "EditExpense", "Expenses", new { id = Model.getId() },
+                                     new AjaxOptions { UpdateTargetId = row_id, InsertionMode = InsertionMode.Replace }) 
+                                                                                                                    
+                @Ajax.ActionLink("Изтрий", "DeleteExpense", "Expenses", new { id = Model.getId() },
+                                     new AjaxOptions { UpdateTargetId = row_id, InsertionMode = InsertionMode.Replace, OnComplete = "updateSaldo" }) 
+            }
+            else
+            {
+                if (Model.ExpenseType == 1)
+                {
+                    @Html.ActionLink("Виж разпределението", "ShowDistributedExpense", "ExpenseDistribution", new { expenseId = Model.getId() }, null)
+                }
+                else if (Model.ExpenseType == 2)
+                {
+                    @Html.ActionLink("Виж начислението", "ShowIndividualExpense", "ExpenseDistribution", new { expenseId = Model.getId() }, null)
+                }
+                else if (Model.ExpenseType == 3)
+                {
+                     @Ajax.ActionLink("Промяна", "EditExpense", "Expenses", new { id = Model.getId() },
+                                     new AjaxOptions { UpdateTargetId = row_id, InsertionMode = InsertionMode.Replace }) 
+                                                                                                                    
+                     @Ajax.ActionLink("Изтрий", "DeleteExpense", "Expenses", new { id = Model.getId() },
+                                     new AjaxOptions { UpdateTargetId = row_id, InsertionMode = InsertionMode.Replace, OnComplete = "updateSaldo" }) 
+                }
+            }
+            
+           
+            @*@Html.ActionLink("EditExpense", "EditExpense", new { id = Model.getId() })*@
+        </div>
+    </div>
