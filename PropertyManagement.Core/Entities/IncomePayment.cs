@@ -15,6 +15,8 @@ namespace PropertyManagement.Core.Entities
 
         public virtual DateTime PayDate { get; set; }
 
+        public virtual Currency Currency { get; set; }
+
         public IncomePayment()
         {
         }

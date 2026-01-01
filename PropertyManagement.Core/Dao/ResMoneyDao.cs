@@ -16,14 +16,15 @@ namespace PropertyManagement.Core.Dao
         }
 
         // Създава ново разплащане
-        public void CreateNew(Detection detection, decimal payedSum, Unit unit)
+        public void CreateNew(Detection detection, decimal payedSum, Unit unit, Currency currency)
         {
             ResMoney resMo = new ResMoney
             {
                 Detection = detection,
                 PayedSum = payedSum,
                 Unit = unit,
-                InsertDate = DateTime.Now
+                InsertDate = DateTime.Now,
+                Currency = currency
             };
 
             SaveOrUpdate(resMo);
@@ -35,6 +36,7 @@ namespace PropertyManagement.Core.Dao
             var resmoney =  CurrentSession.Query<ResMoney>()
                             .Where(x => x.Unit.Id == unitId)
                             .Where(x => x.Detection.Id == detectionId)
+                            .Fetch(x => x.Currency)
                             .ToList();
 
             return resmoney.Sum(x => x.PayedSum);

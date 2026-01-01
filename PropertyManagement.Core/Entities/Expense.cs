@@ -19,6 +19,8 @@ namespace PropertyManagement.Core.Entities
 
         public virtual Unit Unit { get; set; }
 
+        public virtual Currency Currency { get; set; }
+
         public Expense()
         {
         }

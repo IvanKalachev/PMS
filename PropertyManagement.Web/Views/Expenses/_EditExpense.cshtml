@@ -24,7 +24,7 @@
         </div>
         <div class="cell_expense_sum">
             <div class="numeric">
-                @Html.EditorFor(model => model.Sum)
+                @Html.EditorFor(model => model.Sum) @Html.DisplayTextFor(model => model.Currency.Symbol)
             </div>
         </div>
         <div class="cell_expense_options">

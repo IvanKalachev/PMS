@@ -39,6 +39,7 @@ namespace PropertyManagement.Core.Dao
                       .OrderByDescending(x => x.Id)
                       .Fetch(x => x.Detection)
                       .Fetch(x => x.Service)
+                      .Fetch(x => x.Currency)
                       .ToList();
         }
 

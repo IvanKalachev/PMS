@@ -63,5 +63,13 @@ namespace PropertyManagement.Core.Dao
                    .OrderByDescending(x => x.Year).ThenByDescending(x => x.Month)
                    .Select(x => x.Id).FirstOrDefault();
         }
+
+        public Currency GetDetectionCurrency(Int64 detectionId)
+        {
+            return CurrentSession.Query<Expense>()
+                                 .Where(x => x.Detection.Id == detectionId)
+                                 .Select(x => x.Currency)
+                                 .FirstOrDefault();
+        }
     }
 }

@@ -7,3 +7,12 @@ C:\Projects\NewPms\NewPms\PropertyManagement.Web\PropertyManagement.Core\bin\Deb
 C:\Projects\NewPms\NewPms\PropertyManagement.Web\PropertyManagement.Core\obj\Debug\PropertyManagement.Core.csprojResolveAssemblyReference.cache
 C:\Projects\NewPms\NewPms\PropertyManagement.Web\PropertyManagement.Core\obj\Debug\PropertyManagement.Core.dll
 C:\Projects\NewPms\NewPms\PropertyManagement.Web\PropertyManagement.Core\obj\Debug\PropertyManagement.Core.pdb
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\bin\Debug\PropertyManagement.Core.dll
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\bin\Debug\PropertyManagement.Core.pdb
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\bin\Debug\Iesi.Collections.dll
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\bin\Debug\NHibernate.dll
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\bin\Debug\Iesi.Collections.xml
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\bin\Debug\NHibernate.xml
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\obj\Debug\PropertyManagement.Core.csprojResolveAssemblyReference.cache
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\obj\Debug\PropertyManagement.Core.dll
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\obj\Debug\PropertyManagement.Core.pdb

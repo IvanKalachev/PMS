@@ -15,6 +15,8 @@ namespace PropertyManagement.Core.Entities
 
         public virtual decimal PayedSum { get; set; }
 
+        public virtual Currency Currency { get; set; }
+
         private IList<IncomePayment> _incomesPayments;
         public virtual IList<IncomePayment> IncomePayments
         {

@@ -110,5 +110,19 @@ namespace PropertyManagement.Core.Dao
         {
             return CurrentSession.Query<TEntity>().ToList();
         }
+
+        public decimal ConvertCurrency(decimal amount, Currency fromCurrency, Currency toCurrency, int precision = 2)
+        {
+            if (fromCurrency.Id == toCurrency.Id)
+                return amount;
+
+            var fromRate = fromCurrency.ExchangeRate;
+            var toRate = toCurrency.ExchangeRate;
+
+            decimal amountInBase = amount / fromRate;
+            decimal convertedAmount = amountInBase * toRate;
+
+            return Math.Round(convertedAmount, precision, MidpointRounding.AwayFromZero);
+        }
     }
 }

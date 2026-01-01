@@ -27,6 +27,8 @@ namespace PropertyManagement.Web.Models
 
         public Unit Unit { get; set; }
 
+        public Currency Currency { get; set; }
+
         public Int64 getId()
         {
             return this.Id;

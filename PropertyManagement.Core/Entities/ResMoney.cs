@@ -18,5 +18,7 @@ namespace PropertyManagement.Core.Entities
         public virtual decimal PayedSum { get; set; }
 
         public virtual DateTime InsertDate { get; set; }
+
+        public virtual Currency Currency { get; set; }
     }
 }

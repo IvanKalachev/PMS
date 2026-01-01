@@ -1,4 +1,5 @@
 ﻿@model List<PropertyManagement.Web.Models.IncomesModel>
+@using PropertyManagement.Web.Helpers
 @{
     ViewBag.Title = "PrintShortIncomes";
     Layout = "~/Views/Shared/_PrintLayout.cshtml";
@@ -65,16 +66,36 @@
                 @Model[i].Unit.PercentIdealParts %
             </td>
             <td class="bold" height="38">
-                @Model[i].SumToPay лв.
+                <div>
+                    @Model[i].SumToPay @Model[i].Currency.Symbol
+                </div>
+                <div>
+                    @PMHelper.ConvertCurrency(@Model[i].SumToPay, @Model[i].Currency, @Model[i].SecondaryCurrency)
+                </div>
             </td>
             <td height="38">
-               @Model[i].PrevSaldo.ToString("0.00") лв.
+               <div>
+                   @Model[i].PrevSaldo.ToString("0.00") @Model[i].Currency.Symbol
+               </div>
+               <div>
+                   @PMHelper.ConvertCurrency(@Model[i].PrevSaldo, @Model[i].Currency, @Model[i].SecondaryCurrency)
+               </div>
             </td>
             <td height="38">
-                @Model[i].PayedSum.ToString("0.00") лв.
+                <div>
+                    @Model[i].PayedSum.ToString("0.00") @Model[i].Currency.Symbol
+                </div>
+                <div>
+                   @PMHelper.ConvertCurrency(@Model[i].PayedSum, @Model[i].Currency, @Model[i].SecondaryCurrency)
+                </div>
             </td>
             <td class="bold" height="38">
-               @Model[i].GrandTotal.ToString("0.00") лв.
+                <div>
+                    @Model[i].GrandTotal.ToString("0.00") @Model[i].Currency.Symbol
+                </div>
+                <div>
+                    @PMHelper.ConvertCurrency(@Model[i].GrandTotal, @Model[i].Currency, @Model[i].SecondaryCurrency)
+                </div>
             </td>
         </tr>
     }
@@ -90,16 +111,36 @@
             @Model.Sum(x => x.Unit.PercentIdealParts) %
         </td>
         <td>
-            @Model.Sum(x => x.SumToPay).ToString("0.00") лв.
+            <div>
+                @Model.Sum(x => x.SumToPay).ToString("0.00") @Model.FirstOrDefault().Currency.Symbol
+            </div>
+            <div>
+                @PMHelper.ConvertCurrency(@Model.Sum(x => x.SumToPay), @Model.FirstOrDefault().Currency, @Model.FirstOrDefault().SecondaryCurrency)
+            </div>
         </td>
         <td>
-            @Model.Sum(x => x.PrevSaldo).ToString("0.00") лв.
+            <div>
+                @Model.Sum(x => x.PrevSaldo).ToString("0.00") @Model.FirstOrDefault().Currency.Symbol
+            </div>
+            <div>
+                @PMHelper.ConvertCurrency(@Model.Sum(x => x.PrevSaldo), @Model.FirstOrDefault().Currency, @Model.FirstOrDefault().SecondaryCurrency)
+            </div>
         </td>
         <td>
-            @Model.Sum(x => x.PayedSum).ToString("0.00") лв.
+            <div>
+                @Model.Sum(x => x.PayedSum).ToString("0.00") @Model.FirstOrDefault().Currency.Symbol
+            </div>
+            <div>
+                @PMHelper.ConvertCurrency(@Model.Sum(x => x.PayedSum), @Model.FirstOrDefault().Currency, @Model.FirstOrDefault().SecondaryCurrency)
+            </div>
         </td>
         <td>
-            @Model.Sum(x => x.GrandTotal).ToString("0.00") лв.
+            <div>
+                @Model.Sum(x => x.GrandTotal).ToString("0.00") @Model.FirstOrDefault().Currency.Symbol
+            </div>
+            <div>
+                @PMHelper.ConvertCurrency(@Model.Sum(x => x.GrandTotal), @Model.FirstOrDefault().Currency, @Model.FirstOrDefault().SecondaryCurrency)
+            </div>
         </td>
     </tr>
 </table>

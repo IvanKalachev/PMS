@@ -46,10 +46,10 @@
             Вноски живущи
         </td>
         <td>
-            @incomes.Sum(x => x.SumToPay) лв.
+            @incomes.Sum(x => x.SumToPay) @incomes.FirstOrDefault().Currency.Symbol
         </td>
         <td>
-            @incomes.Sum(x => x.PayedSum) лв.
+            @incomes.Sum(x => x.PayedSum) @incomes.FirstOrDefault().Currency.Symbol
         </td>
     </tr>
 </table>

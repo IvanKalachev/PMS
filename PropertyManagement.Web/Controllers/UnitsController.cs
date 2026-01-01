@@ -19,12 +19,16 @@ namespace PropertyManagement.Web.Controllers
         public ActionResult Index()
         {
             UnitDao unitDao = new UnitDao(CurrentSession);
+            CurrencyDao currencyDao = new CurrencyDao(CurrentSession);
             var units = unitDao.LoadAll();
+            var baseCurrency = currencyDao.GetDefaultCurrency();
             List<UnitModel> models = new List<UnitModel>();
             foreach (var unit in units)
             {
                 models.Add(PMHelper.ConvertTo<UnitModel>(unit));
             }
+
+            ViewBag.Currency = baseCurrency.Symbol;
 
             return View(models);
         }

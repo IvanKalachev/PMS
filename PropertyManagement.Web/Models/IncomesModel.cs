@@ -44,5 +44,8 @@ namespace PropertyManagement.Web.Models
         }
 
         public decimal ResMoney { get; set; }
+
+        public Currency Currency { get; set; }
+        public Currency SecondaryCurrency { get; set; }
     }
 }

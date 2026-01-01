@@ -91,46 +91,46 @@
                     @Model[i].Unit.PercentIdealParts %
                 </td>
                 <td>
-                    <strong>@Model[i].SumToPay лв.</strong>
+                    <strong>@Model[i].SumToPay @Model[i].Currency.Symbol</strong>
                 </td>
                 <td class="bold">
                      @if (Model[i].PrevSaldo > 0)
                      {
-                         <span class="red">@Model[i].PrevSaldo.ToString("0.00") лв.</span>
+                         <span class="red">@Model[i].PrevSaldo.ToString("0.00") @Model[i].Currency.Symbol</span>
                      }
                      else
                      {
-                         <span class="green">@Model[i].PrevSaldo.ToString("0.00") лв.</span>
+                         <span class="green">@Model[i].PrevSaldo.ToString("0.00") @Model[i].Currency.Symbol</span>
                      }
                      
                 </td>
                 <td class="bold">
                      @if (Model[i].PayedSum > 0)
                      {
-                         <span class="green">@Model[i].PayedSum.ToString("0.00") лв.</span>
+                         <span class="green">@Model[i].PayedSum.ToString("0.00") @Model[i].Currency.Symbol</span>
                      }
                      else
                      {
-                         <span class="red">@Model[i].PayedSum.ToString("0.00") лв.</span>
+                         <span class="red">@Model[i].PayedSum.ToString("0.00") @Model[i].Currency.Symbol</span>
                      }
                 </td>
                 <td class="bold">
                     @if (Model[i].GrandTotal > 0)
                     {
-                         <span class="red">@Model[i].GrandTotal.ToString("0.00") лв.</span>
+                         <span class="red">@Model[i].GrandTotal.ToString("0.00") @Model[i].Currency.Symbol</span>
                     }
                     else
                     {
-                         <span class="green">@Model[i].GrandTotal.ToString("0.00") лв.</span>
+                         <span class="green">@Model[i].GrandTotal.ToString("0.00") @Model[i].Currency.Symbol</span>
                     }
                 </td>
                 <td>
                     <div class="numeric">
-                        @Html.EditorFor(m => m[i].VneseniPari) лв.
+                        @Html.EditorFor(m => m[i].VneseniPari) @Model[i].Currency.Symbol
                     </div>
                 </td>
                 <td class="bold">
-                    @Model[i].ResMoney.ToString("0.00") лв.
+                    @Model[i].ResMoney.ToString("0.00") @Model[i].Currency.Symbol
                 </td>
 
                 @*<td class="bold">
@@ -175,21 +175,21 @@
               @Model.Sum(x => x.Unit.PercentIdealParts) %
            </td>
            <td>
-              @Model.Sum(x => x.SumToPay).ToString("0.00") лв.
+              @Model.Sum(x => x.SumToPay).ToString("0.00") @Model.Select(m => m.Currency).FirstOrDefault().Symbol
            </td>
            <td>
-              @Model.Sum(x => x.PrevSaldo).ToString("0.00") лв.
+              @Model.Sum(x => x.PrevSaldo).ToString("0.00") @Model.Select(m => m.Currency).FirstOrDefault().Symbol
            </td>
            <td>
-              @Model.Sum(x => x.PayedSum).ToString("0.00") лв.
+              @Model.Sum(x => x.PayedSum).ToString("0.00") @Model.Select(m => m.Currency).FirstOrDefault().Symbol
            </td>
            <td>
-              @Model.Sum(x => x.GrandTotal).ToString("0.00") лв.
+              @Model.Sum(x => x.GrandTotal).ToString("0.00") @Model.Select(m => m.Currency).FirstOrDefault().Symbol
            </td>
            <td>
            </td>
            <td>
-              @Model.Sum(x => x.ResMoney).ToString("0.00") лв.
+              @Model.Sum(x => x.ResMoney).ToString("0.00") @Model.Select(m => m.Currency).FirstOrDefault().Symbol
            </td>
         </tr>
     </table>
@@ -217,10 +217,10 @@
             Вноски живущи
         </td>
         <td>
-            @Model.Sum(x => x.SumToPay) лв.
+            @Model.Sum(x => x.SumToPay) @Model.Select(m => m.Currency).FirstOrDefault().Symbol
         </td>
         <td>
-            @Model.Sum(x => x.PayedSum) лв.
+            @Model.Sum(x => x.PayedSum) @Model.Select(m => m.Currency).FirstOrDefault().Symbol
         </td>
     </tr>
 </table>

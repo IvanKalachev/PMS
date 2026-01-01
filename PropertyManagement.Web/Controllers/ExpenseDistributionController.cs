@@ -69,6 +69,7 @@ namespace PropertyManagement.Web.Controllers
                 unitCharge.Expense = expense;
                 unitCharge.Unit = unit;
                 unitCharge.SumToPay = unit.ChargedSum;
+                unitCharge.Currency = expense.Currency;
                 
                 // има предплатена сума => разплащаме новото задължение
                 if (unitBalanceBeforeCharge < 0)
@@ -100,6 +101,7 @@ namespace PropertyManagement.Web.Controllers
                     payment.PayedCharges.Add(unitCharge);
                     payment.PayedSum = unitCharge.PayedSum;
                     payment.Unit = unitCharge.Unit;
+                    payment.Currency = expense.Currency;
 
                     incomePaymentDao.SaveOrUpdate(payment);
                 }
@@ -139,6 +141,7 @@ namespace PropertyManagement.Web.Controllers
             unitCharge.Expense = expense;
             unitCharge.Unit = expense.Unit;
             unitCharge.SumToPay = expense.Sum;
+            unitCharge.Currency = expense.Currency;
             unitDao.SaveOrUpdate(expense.Unit);
             unitChargeDao.SaveOrUpdate(unitCharge);
             expenseDao.SaveOrUpdate(expense);

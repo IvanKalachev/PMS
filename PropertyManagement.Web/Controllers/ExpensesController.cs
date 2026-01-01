@@ -20,6 +20,8 @@ namespace PropertyManagement.Web.Controllers
         public ActionResult Index(Int64? detectionId)
         {
             DetectionDao detectionDao = new DetectionDao(CurrentSession);
+            CurrencyDao currencyDao = new CurrencyDao(CurrentSession);
+
             var detections = detectionDao.GetAll();
             if (detectionId != null)
             {
@@ -36,19 +38,15 @@ namespace PropertyManagement.Web.Controllers
             ExpenseDao expenseDao = new ExpenseDao(CurrentSession);
             IList<ExpenseModel> expensesToShow = new List<ExpenseModel>();
             IList<Expense> detectionExpenses = new List<Expense>();
-            if (detectionId != null)
-            {
-                detectionExpenses = expenseDao.LoadByDetection((Int64)detectionId);
-            }
-            else
-            {
-                detectionExpenses = expenseDao.LoadByDetection(detections.FirstOrDefault().Id);
-            }
+
+            var dId = detectionId != null ? (Int64)detectionId : detections.FirstOrDefault().Id;
+            detectionExpenses = expenseDao.LoadByDetection(dId);
+            var currency = GetCurrency(dId);
+            ViewBag.Currency = currency.Symbol;
 
             foreach(var expense in detectionExpenses)
             {
                 expensesToShow.Add(PMHelper.ConvertTo<ExpenseModel>(expense));
-
             }
 
             ExpensesViewModel model = new ExpensesViewModel();
@@ -61,18 +59,21 @@ namespace PropertyManagement.Web.Controllers
         public ActionResult AddExpense(FormCollection collection)
         {
             ExpenseDao expenseDao = new ExpenseDao(CurrentSession);
+            CurrencyDao currencyDao = new CurrencyDao(CurrentSession);
             decimal overheadSum = -1;
             decimal individualSum = -1;
             Decimal.TryParse(collection["sum"].ToString(), out overheadSum);
             Decimal.TryParse(collection["individualSum"].ToString(), out individualSum);
 
             var detection = CurrentSession.Get<Detection>(Int64.Parse(collection["detection"].ToString()));
+            var currency = GetCurrency(detection.Id);
 
             if ((overheadSum != -1 || individualSum != -1) && (overheadSum != 0 || individualSum != 0))
             {
                 Expense newExpense = new Expense();
                 newExpense.IsDistributed = false;
                 newExpense.Detection = detection;
+                newExpense.Currency = currency;
 
                 if (collection["overHeadButton"] != null)
                 {
@@ -99,6 +100,8 @@ namespace PropertyManagement.Web.Controllers
                 }
                 
                 expenseDao.Create(newExpense);
+
+                ViewBag.Currency = currency.Symbol;
 
                 var model = PMHelper.ConvertTo<ExpenseModel>(newExpense);
                 return PartialView("_AddedExpense", model);
@@ -286,6 +289,23 @@ namespace PropertyManagement.Web.Controllers
                 }
 
                 return result;
+        }
+
+        // връща валутата за дадения месец
+        private Currency GetCurrency(Int64 detectionId)
+        {
+            var currencyDao = new CurrencyDao(CurrentSession);
+            var expensesDao = new ExpenseDao(CurrentSession);
+
+            var currency = currencyDao.GetDefaultCurrency();
+
+            var detectionExpenses = expensesDao.LoadByDetection(detectionId);
+            if (detectionExpenses != null && detectionExpenses.Any())
+            {
+                currency = detectionExpenses.FirstOrDefault().Currency;
+            }
+
+            return currency;
         }
     }
 }

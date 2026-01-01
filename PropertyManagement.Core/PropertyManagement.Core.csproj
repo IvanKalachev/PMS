@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Dao\BaseDao.cs" />
     <Compile Include="Dao\ChargeTypeDao.cs" />
+    <Compile Include="Dao\CurrencyDao.cs" />
     <Compile Include="Dao\IncomePaymentDao.cs" />
     <Compile Include="Dao\ExpenseDao.cs" />
     <Compile Include="Dao\DetectionDao.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Dao\UnitChargeDao.cs" />
     <Compile Include="Dao\UnitDao.cs" />
     <Compile Include="Entities\ChargeType.cs" />
+    <Compile Include="Entities\Currency.cs" />
     <Compile Include="Entities\Detection.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Expense.cs" />
@@ -76,6 +78,8 @@
     <Compile Include="UserMebership.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Entities\Mappings\Currency.hbm.xml" />
+    <Content Include="Scripts\dbUpdate03.sql" />
     <EmbeddedResource Include="Entities\Mappings\Unit.hbm.xml" />
     <EmbeddedResource Include="Entities\Mappings\Right.hbm.xml" />
     <EmbeddedResource Include="Entities\Mappings\User.hbm.xml" />

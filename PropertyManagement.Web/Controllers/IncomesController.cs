@@ -60,12 +60,15 @@ namespace PropertyManagement.Web.Controllers
            IncomePaymentDao incomePaymentDao = new IncomePaymentDao(CurrentSession);
            Detection detection = detectionDao.LoadById(Int64.Parse(collection["detectionid"].ToString()));
            ResMoneyDao resMoneyDao = new ResMoneyDao(CurrentSession);
+
+           var detectionCurrency = detectionDao.GetDetectionCurrency(detection.Id);
+
            foreach(var m in model)
            {
                if (m.VneseniPari > 0)
                {
-                    unitChargeDao.PayExpenses(m.VneseniPari, m.Unit.Id, detection);
-                    resMoneyDao.CreateNew(detection, m.VneseniPari, m.Unit);
+                    unitChargeDao.PayExpenses(m.VneseniPari, detectionCurrency, m.Unit.Id, detection);
+                    resMoneyDao.CreateNew(detection, m.VneseniPari, m.Unit, detectionCurrency);
                }
                //else if (m.VneseniPari < 0)
                //{
@@ -123,9 +126,16 @@ namespace PropertyManagement.Web.Controllers
             DetectionDao detectionDao = new DetectionDao(CurrentSession);
             UnitChargeDao unitChargeDao = new UnitChargeDao(CurrentSession);
             ResMoneyDao resMoneyDao = new ResMoneyDao(CurrentSession);
+            CurrencyDao currencyDao = new CurrencyDao(CurrentSession);
             var detection = detectionDao.LoadById((Int64)detectionId);
 
             var unitChargesForDetection = unitChargeDao.GetAllByDetection((Int64)detectionId);
+
+            var currency = unitChargesForDetection.FirstOrDefault().Currency;
+
+            var currencies = currencyDao.LoadAll();
+            var secondaryCurrency = currencies.FirstOrDefault(c => c.Id != currency.Id);
+
             var incomes = (from c in unitChargesForDetection
                        group c by c.Unit into dataGroup
                        select new IncomesModel
@@ -134,10 +144,12 @@ namespace PropertyManagement.Web.Controllers
                            PayedSum = dataGroup.Select(x => x.PayedSum).Sum(),
                            RealPayedSum = GetRealPayedSum((Int64)detectionId, dataGroup.Key.Id),
                            SumToPay = dataGroup.Select(x => x.SumToPay).Sum(),
-                           PrevSaldo = unitChargeDao.GetPreviousSaldo(dataGroup.Key.Id, detection),
+                           PrevSaldo = unitChargeDao.GetPreviousSaldo(dataGroup.Key.Id, detection, currency),
                            DetectionId = dataGroup.Select(x => x.Expense.Detection.Id).FirstOrDefault(),
                            UnitCharges = unitChargeDao.GetAllByUnitAndDetection(dataGroup.Key.Id, detection.Id),
-                           ResMoney = resMoneyDao.GetSumByUnitAndDetection(dataGroup.Key.Id, detection.Id)
+                           ResMoney = resMoneyDao.GetSumByUnitAndDetection(dataGroup.Key.Id, detection.Id),
+                           Currency = dataGroup.Select(x => x.Currency).FirstOrDefault(),
+                           SecondaryCurrency = secondaryCurrency
                        }).ToList();
 
             return incomes;
@@ -274,34 +286,67 @@ namespace PropertyManagement.Web.Controllers
                     if (hasCharge == null)
                     {
                         sb.Append("<td " + printHeight + ">");
-                        sb.Append("0.00 лв.");
+                        sb.Append("0.00 " + incomes.FirstOrDefault().Currency.Symbol);
                         sb.Append("</td>");
                     }
                     else
                     {
                         sb.Append("<td " + printHeight + ">");
-                        sb.Append(hasCharge.SumToPay.ToString("0.00") + " лв.");
+                        sb.Append(hasCharge.SumToPay.ToString("0.00") + " " + hasCharge.Currency.Symbol);
                         sb.Append("</td>");
                     }
                    
                 }
 
                 sb.Append("<td class=\"bold\" " + printHeight + ">");
-                sb.Append(charge.SumToPay.ToString("0.00") + " лв.");
+                sb.Append("<div>");
+                sb.Append(charge.SumToPay.ToString("0.00") + " " + charge.Currency.Symbol);
+                sb.Append("</div>");
+                if (forPrint)
+                {
+                    sb.Append("<div>");
+                    sb.Append(PMHelper.ConvertCurrency(charge.SumToPay, charge.Currency, charge.SecondaryCurrency));
+                    sb.Append("</div>");
+                } 
                 sb.Append("</td>");
 
                 sb.Append("<td " + printHeight + ">");
-                sb.Append(charge.PrevSaldo.ToString("0.00") + " лв.");
+                sb.Append("<div>");
+                sb.Append(charge.PrevSaldo.ToString("0.00") + " " + charge.Currency.Symbol);
+                sb.Append("</div>");
+                if (forPrint)
+                {
+                    sb.Append("<div>");
+                    sb.Append(PMHelper.ConvertCurrency(charge.PrevSaldo, charge.Currency, charge.SecondaryCurrency));
+                    sb.Append("</div>");
+                }
                 sb.Append("</td>");
 
 
                 sb.Append("<td " + printHeight + ">");
-                sb.Append(charge.ResMoney.ToString("0.00") + " лв.");
+                sb.Append("<div>");
+                sb.Append(charge.ResMoney.ToString("0.00") + " " + charge.Currency.Symbol);
+                sb.Append("</div>");
+                if (forPrint)
+                {
+                    sb.Append("<div>");
+                    sb.Append(PMHelper.ConvertCurrency(charge.ResMoney, charge.Currency, charge.SecondaryCurrency));
+                    sb.Append("</div>");
+
+                }
                 sb.Append("</td>");
 
 
                 sb.Append("<td class=\"bold\" " + printHeight + ">");
-                sb.Append(charge.GrandTotal.ToString("0.00") + " лв.");
+                sb.Append("<div>");
+                sb.Append(charge.GrandTotal.ToString("0.00") + " " + charge.Currency.Symbol);
+                sb.Append("</div>");
+                if (forPrint)
+                {
+                    sb.Append("<div>");
+                    sb.Append(PMHelper.ConvertCurrency(charge.GrandTotal, charge.Currency, charge.SecondaryCurrency));
+                    sb.Append("</div>");
+                }
                 sb.Append("</td>");
 
 
@@ -358,25 +403,57 @@ namespace PropertyManagement.Web.Controllers
                                      select d).ToList();
 
                  sb.Append("<td class=\"full_incomes_footer\">");
-                 sb.Append(chargesToSum.Sum(x => x.SumToPay).ToString("0.00") + " лв.");
+                 sb.Append(chargesToSum.Sum(x => x.SumToPay).ToString("0.00") + " " + chargesToSum.FirstOrDefault().Currency.Symbol);
                  sb.Append("</td>");
 
             }
 
             sb.Append("<td class=\"full_incomes_footer\">");
-            sb.Append(incomes.Sum(x => x.SumToPay).ToString("0.00") + " лв.");
+            sb.Append("<div>");
+            sb.Append(incomes.Sum(x => x.SumToPay).ToString("0.00") + " " + incomes.FirstOrDefault().Currency.Symbol);
+            sb.Append("</div>");
+            if (forPrint)
+            {
+                sb.Append("<div>");
+                sb.Append(PMHelper.ConvertCurrency(incomes.Sum(x => x.SumToPay), incomes.FirstOrDefault().Currency, incomes.FirstOrDefault().SecondaryCurrency));
+                sb.Append("</div>");
+            }
             sb.Append("</td>");
 
             sb.Append("<td class=\"full_incomes_footer\">");
-            sb.Append(incomes.Sum(x => x.PrevSaldo).ToString("0.00") + " лв.");
+            sb.Append("<div>");
+            sb.Append(incomes.Sum(x => x.PrevSaldo).ToString("0.00") + " " + incomes.FirstOrDefault().Currency.Symbol);
+            sb.Append("</div>");
+            if (forPrint)
+            {
+                sb.Append("<div>");
+                sb.Append(PMHelper.ConvertCurrency(incomes.Sum(x => x.PrevSaldo), incomes.FirstOrDefault().Currency, incomes.FirstOrDefault().SecondaryCurrency));
+                sb.Append("</div>");
+            }
             sb.Append("</td>");
 
             sb.Append("<td class=\"full_incomes_footer\">");
-            sb.Append(incomes.Sum(x => x.ResMoney).ToString("0.00") + " лв.");
+            sb.Append("<div>");
+            sb.Append(incomes.Sum(x => x.ResMoney).ToString("0.00") + " " + incomes.FirstOrDefault().Currency.Symbol);
+            sb.Append("</div>");
+            if (forPrint)
+            {
+                sb.Append("<div>");
+                sb.Append(PMHelper.ConvertCurrency(incomes.Sum(x => x.ResMoney), incomes.FirstOrDefault().Currency, incomes.FirstOrDefault().SecondaryCurrency));
+                sb.Append("</div>");
+            }
             sb.Append("</td>");
 
             sb.Append("<td class=\"full_incomes_footer\">");
-            sb.Append(incomes.Sum(x => x.GrandTotal).ToString("0.00") + " лв.");
+            sb.Append("<div>");
+            sb.Append(incomes.Sum(x => x.GrandTotal).ToString("0.00") + " " + incomes.FirstOrDefault().Currency.Symbol);
+            sb.Append("</div>");
+            if (forPrint)
+            {
+                sb.Append("<div>");
+                sb.Append(PMHelper.ConvertCurrency(incomes.Sum(x => x.GrandTotal), incomes.FirstOrDefault().Currency, incomes.FirstOrDefault().SecondaryCurrency));
+                sb.Append("</div>");
+            }
             sb.Append("</td>");
 
 

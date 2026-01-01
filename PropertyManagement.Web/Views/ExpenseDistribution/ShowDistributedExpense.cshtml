@@ -59,14 +59,14 @@
                     @Html.DisplayFor(m => m[i].Unit.Floor)
                 </td>
                 <td>
-                    <span class="red">@Model[i].SumToPay лв.</span>
+                    <span class="red">@Model[i].SumToPay @Model[i].Currency.Symbol</span>
                 </td>
             </tr>
         }
         <tr>
             <td colspan="6" style="background-color: Silver; font-weight: bold; padding: 5px; padding-right:100px" 
                 align="right">
-                <span class="red">Общо: @Model.Sum(x => x.SumToPay) лв.</span>
+                <span class="red">Общо: @Model.Sum(x => x.SumToPay) @Model.FirstOrDefault().Currency.Symbol</span>
             </td>
         </tr>
     </table>

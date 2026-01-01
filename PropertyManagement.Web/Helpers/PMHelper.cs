@@ -49,7 +49,7 @@ namespace PropertyManagement.Web.Helpers
 
             SelectList result = null;
 
-            if(selectedValue != 0)
+            if (selectedValue != 0)
             {
                 result = new SelectList(items, "Id", "Name", selectedValue);
             }
@@ -61,5 +61,34 @@ namespace PropertyManagement.Web.Helpers
             return result;
         }
 
+        public static decimal ConvertCurrency(decimal amount, Currency fromCurrency, Currency toCurrency, int precision = 2)
+        {
+            if (fromCurrency.Id == toCurrency.Id)
+                return amount;
+
+            var fromRate = fromCurrency.ExchangeRate;
+            var toRate = toCurrency.ExchangeRate;
+
+            decimal amountInBase = amount / fromRate;
+            decimal convertedAmount = amountInBase * toRate;
+
+            return Math.Round(convertedAmount, precision, MidpointRounding.AwayFromZero);
+        }
+
+        public static string ConvertCurrency(decimal amount, Currency fromCurrency, Currency toCurrency)
+        {
+            if (fromCurrency.Id == toCurrency.Id)
+                return amount.ToString("0.00");
+
+            var fromRate = fromCurrency.ExchangeRate;
+            var toRate = toCurrency.ExchangeRate;
+
+            decimal amountInBase = amount / fromRate;
+            decimal convertedAmount = amountInBase * toRate;
+
+            var result = Math.Round(convertedAmount, 2, MidpointRounding.AwayFromZero);
+
+            return result.ToString("0.00") + " " + toCurrency.Symbol;
+        }
     }
 }

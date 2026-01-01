@@ -35,6 +35,7 @@ namespace PropertyManagement.Core.Dao
                     .Where(x => x.Expense.Detection.Id == detectionId)
                     .Fetch(x => x.Unit)
                     .Fetch(x => x.Expense)
+                    .Fetch(x => x.Currency)
                     .ToList();
         }
 
@@ -54,6 +55,7 @@ namespace PropertyManagement.Core.Dao
             var result =  CurrentSession.Query<UnitCharge>()
                             .Where(x => x.Unit.Id == unitId)
                             .Where(x => x.PayedSum < x.SumToPay)
+                            .Fetch(x => x.Currency)
                             .Fetch(x => x.Expense)
                             .ThenFetch(x => x.Detection)
                             .Fetch(x => x.Expense)
@@ -78,15 +80,27 @@ namespace PropertyManagement.Core.Dao
         }
 
         // връща неплатената сума за всички предишни месеци
-        public decimal GetPreviousSaldo(Int64 unitId, Detection detection)
+        public decimal GetPreviousSaldo(Int64 unitId, Detection detection, Currency currency)
         {
-            return (from c in GetAllUnpaiedForUnit(unitId)
-                    where c.Expense.Detection.GetDetectionDateTime() < detection.GetDetectionDateTime()
-                    select c).Sum(x => x.SumToPay - x.PayedSum);
+            var unpaiedForUnit = from c in GetAllUnpaiedForUnit(unitId)
+                                 where c.Expense.Detection.GetDetectionDateTime() < detection.GetDetectionDateTime()
+                                 select c;
+
+            decimal sum = 0;
+            foreach(var unitCharge in unpaiedForUnit)
+            {
+                sum += ConvertCurrency((unitCharge.SumToPay - unitCharge.PayedSum), unitCharge.Currency, currency);
+            }
+
+            return sum;
+
+            //return (from c in GetAllUnpaiedForUnit(unitId)
+            //        where c.Expense.Detection.GetDetectionDateTime() < detection.GetDetectionDateTime()
+            //        select c).Sum(x => x.SumToPay - x.PayedSum);
         }
 
         // разплаща задължение
-        public void PayExpenses(decimal paiedSum, Int64 unitId, Detection detection)
+        public void PayExpenses(decimal paiedSum, Currency currency, Int64 unitId, Detection detection)
         {
             UnitDao unitDao = new UnitDao(CurrentSession);
             UnitChargeDao unitChargeDao = new UnitChargeDao(CurrentSession);
@@ -115,20 +129,20 @@ namespace PropertyManagement.Core.Dao
                     {
                         if (unpaiedCharge.PayedSum == 0)
                         {
-                            if (paiedSum >= unpaiedCharge.SumToPay)
+                            if (paiedSum >= ConvertCurrency(unpaiedCharge.SumToPay, unpaiedCharge.Currency, currency))
                             {
-                                paiedSum = paiedSum - unpaiedCharge.SumToPay;
+                                paiedSum = paiedSum - ConvertCurrency(unpaiedCharge.SumToPay, unpaiedCharge.Currency, currency);
                                 unpaiedCharge.PayedSum = unpaiedCharge.SumToPay;
                             }
                             else
                             {
-                                unpaiedCharge.PayedSum += paiedSum;
+                                unpaiedCharge.PayedSum += ConvertCurrency(paiedSum, currency, unpaiedCharge.Currency);
                                 paiedSum = 0;
                             }
                         }
                         else
                         {
-                            var sumToPay = (unpaiedCharge.SumToPay - unpaiedCharge.PayedSum);
+                            var sumToPay = ConvertCurrency((unpaiedCharge.SumToPay - unpaiedCharge.PayedSum), unpaiedCharge.Currency, currency);
                             if (paiedSum >= sumToPay)
                             {
                                 paiedSum = paiedSum - sumToPay;
@@ -136,7 +150,7 @@ namespace PropertyManagement.Core.Dao
                             }
                             else
                             {
-                                unpaiedCharge.PayedSum += paiedSum;
+                                unpaiedCharge.PayedSum += ConvertCurrency(paiedSum, currency, unpaiedCharge.Currency);
                                 paiedSum = 0;
                             }
                         }
@@ -157,7 +171,8 @@ namespace PropertyManagement.Core.Dao
                     Detection = detection,
                     PayedSum = totalPaiedSum,
                     PayDate = DateTime.Now,
-                    PayedCharges = payedCharges
+                    PayedCharges = payedCharges,
+                    Currency = currency
                 };
 
                 incomePaymentDao.SaveOrUpdate(payment);

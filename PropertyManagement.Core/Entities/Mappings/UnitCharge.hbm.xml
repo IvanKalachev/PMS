@@ -8,6 +8,7 @@
         </id>
         <many-to-one name="Unit" column="UnitId" class="PropertyManagement.Core.Entities.Unit, PropertyManagement.Core" />
         <many-to-one name="Expense" column="ExpenseId" class="PropertyManagement.Core.Entities.Expense, PropertyManagement.Core" />
+        <many-to-one name="Currency" column="CurrencyId" class="PropertyManagement.Core.Entities.Currency, PropertyManagement.Core" />
         <property name="SumToPay"/>
         <property name="PayedSum"/>
       <bag name="IncomePayments" table="IncomesPayments_PayedExpenses" lazy="true">
