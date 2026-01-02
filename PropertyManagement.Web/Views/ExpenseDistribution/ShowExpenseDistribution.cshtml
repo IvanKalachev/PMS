@@ -26,7 +26,7 @@
         <tr>
             <td>
                 <div class="expenseDistribution">
-                    Сума: @Model.Expense.Sum лв.
+                    Сума: @Model.Expense.Sum €
                 </div>
             </td>
         </tr>
@@ -73,7 +73,7 @@
                     @Html.DisplayFor(m => m.Units[i].Floor)
                 </td>
                 <td>
-                    <span class="red">@Model.Units[i].ChargedSum лв.</span>
+                    <span class="red">@Model.Units[i].ChargedSum €</span>
                 </td>
             </tr>
         }
@@ -91,7 +91,7 @@
             <td>
             </td>
             <td>
-                <span class="red">@Model.Units.Sum(x => x.ChargedSum) лв.</span>
+                <span class="red">@Model.Units.Sum(x => x.ChargedSum) €</span>
             </td>
         </tr>
         <tr>

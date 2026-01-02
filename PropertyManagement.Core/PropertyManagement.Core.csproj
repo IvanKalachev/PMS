@@ -57,6 +57,7 @@
     <Compile Include="Dao\DetectionDao.cs" />
     <Compile Include="Dao\ResMoneyDao.cs" />
     <Compile Include="Dao\ServiceDao.cs" />
+    <Compile Include="Dao\StatamentDao.cs" />
     <Compile Include="Dao\UnitChargeDao.cs" />
     <Compile Include="Dao\UnitDao.cs" />
     <Compile Include="Entities\ChargeType.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Entities\ResMoney.cs" />
     <Compile Include="Entities\Right.cs" />
     <Compile Include="Entities\Service.cs" />
+    <Compile Include="Entities\Statement.cs" />
     <Compile Include="Entities\Unit.cs" />
     <Compile Include="Entities\UnitCharge.cs" />
     <Compile Include="Entities\User.cs" />
@@ -76,6 +78,8 @@
     <Compile Include="UserMebership.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Entities\Mappings\Statement.hbm.xml" />
+    <Content Include="Scripts\dbUpdate03.sql" />
     <EmbeddedResource Include="Entities\Mappings\Unit.hbm.xml" />
     <EmbeddedResource Include="Entities\Mappings\Right.hbm.xml" />
     <EmbeddedResource Include="Entities\Mappings\User.hbm.xml" />
@@ -87,6 +91,7 @@
     <EmbeddedResource Include="Entities\Mappings\UnitCharge.hbm.xml" />
     <EmbeddedResource Include="Entities\Mappings\IncomePayment.hbm.xml" />
     <EmbeddedResource Include="Entities\Mappings\ResMoney.hbm.xml" />
+    <Content Include="Scripts\clearDb.sql" />
     <Content Include="Scripts\dbUpdate02.sql" />
     <Content Include="Scripts\dbUpdate01.sql" />
   </ItemGroup>

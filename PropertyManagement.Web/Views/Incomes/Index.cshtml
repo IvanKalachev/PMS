@@ -16,7 +16,6 @@
 
 @using (Html.BeginForm("SaveIncomes", "Incomes"))
 {
-   
     <span class="bold">Постъпления за месец: </span>@Html.DropDownList("detectionId", (SelectList)ViewBag.DetectionsList,
                                                 new { onchange = "document.location.href = '/Incomes?detectionId='+this.options[this.selectedIndex].value;" })
    
@@ -61,7 +60,7 @@
                 Задължения от предишни месеци
             </th>
             <th width="11%">
-                Платена сума за месеца
+                Платена сума за месеца (в брой)
             </th>
             <th width="11%">
                 Общо за плащане
@@ -70,7 +69,7 @@
                 Внасяне на пари
             </th>
             <th width="16%">
-                Внесена сума за месеца
+                Внесена сума за месеца (в брой)
             </th>
             
         </tr>
@@ -91,46 +90,53 @@
                     @Model[i].Unit.PercentIdealParts %
                 </td>
                 <td>
-                    <strong>@Model[i].SumToPay лв.</strong>
+                    <strong>@Model[i].SumToPay €</strong>
                 </td>
                 <td class="bold">
                      @if (Model[i].PrevSaldo > 0)
                      {
-                         <span class="red">@Model[i].PrevSaldo.ToString("0.00") лв.</span>
+                         <span class="red">@Model[i].PrevSaldo.ToString("0.00") €</span>
                      }
                      else
                      {
-                         <span class="green">@Model[i].PrevSaldo.ToString("0.00") лв.</span>
+                         <span class="green">@Model[i].PrevSaldo.ToString("0.00") €</span>
                      }
                      
                 </td>
                 <td class="bold">
                      @if (Model[i].PayedSum > 0)
                      {
-                         <span class="green">@Model[i].PayedSum.ToString("0.00") лв.</span>
+                         <span class="green">@Model[i].PayedSum.ToString("0.00") €</span>
                      }
                      else
                      {
-                         <span class="red">@Model[i].PayedSum.ToString("0.00") лв.</span>
+                         <span class="red">@Model[i].PayedSum.ToString("0.00") €</span>
                      }
                 </td>
                 <td class="bold">
                     @if (Model[i].GrandTotal > 0)
                     {
-                         <span class="red">@Model[i].GrandTotal.ToString("0.00") лв.</span>
+                         <span class="red">@Model[i].GrandTotal.ToString("0.00") €</span>
                     }
                     else
                     {
-                         <span class="green">@Model[i].GrandTotal.ToString("0.00") лв.</span>
+                         <span class="green">@Model[i].GrandTotal.ToString("0.00") €</span>
                     }
                 </td>
                 <td>
                     <div class="numeric">
-                        @Html.EditorFor(m => m[i].VneseniPari) лв.
+                        @Html.EditorFor(m => m[i].VneseniPari) €
                     </div>
                 </td>
                 <td class="bold">
-                    @Model[i].ResMoney.ToString("0.00") лв.
+                    @if (Model[i].ResMoney > 0)
+                    {
+                        <a title="Виж история на направените плащания за месеца" href="#" onclick="openPaymentsReport(@Model[i].Unit.Id, @Model[i].DetectionId)">@Model[i].ResMoney.ToString("0.00") €</a>
+                    }
+                    else
+                    {
+                        <span>@Model[i].ResMoney.ToString("0.00") €</span>
+                    }
                 </td>
 
                 @*<td class="bold">
@@ -140,22 +146,22 @@
                     }
                     else
                     {
-                        <span class="red">@Model[i].RealPayedSum.ToString("0.00") лв.</span>
+                        <span class="red">@Model[i].RealPayedSum.ToString("0.00") €</span>
                     }
                 </td>
                 <td class="bold"> 
                     @if (Model[i].Saldo > 0)
                     {
-                        <span class="red">@Model[i].Saldo лв.</span>
+                        <span class="red">@Model[i].Saldo €</span>
                     }
                     else
                     {
-                        <span>@Model[i].Saldo лв.</span>
+                        <span>@Model[i].Saldo €</span>
                     }  
                 </td>
                 <td>
                     <div class="numeric">
-                        @Html.EditorFor(m => m[i].VneseniPari) лв.
+                        @Html.EditorFor(m => m[i].VneseniPari) €
                     </div>
                 </td>
                 <td>
@@ -175,21 +181,21 @@
               @Model.Sum(x => x.Unit.PercentIdealParts) %
            </td>
            <td>
-              @Model.Sum(x => x.SumToPay).ToString("0.00") лв.
+              @Model.Sum(x => x.SumToPay).ToString("0.00") €
            </td>
            <td>
-              @Model.Sum(x => x.PrevSaldo).ToString("0.00") лв.
+              @Model.Sum(x => x.PrevSaldo).ToString("0.00") €
            </td>
            <td>
-              @Model.Sum(x => x.PayedSum).ToString("0.00") лв.
+              @Model.Sum(x => x.PayedSum).ToString("0.00") €
            </td>
            <td>
-              @Model.Sum(x => x.GrandTotal).ToString("0.00") лв.
+              @Model.Sum(x => x.GrandTotal).ToString("0.00") €
            </td>
            <td>
            </td>
            <td>
-              @Model.Sum(x => x.ResMoney).ToString("0.00") лв.
+               @Model.Sum(x => x.ResMoney).ToString("0.00") €
            </td>
         </tr>
     </table>
@@ -217,10 +223,10 @@
             Вноски живущи
         </td>
         <td>
-            @Model.Sum(x => x.SumToPay) лв.
+            @Model.Sum(x => x.SumToPay) €
         </td>
         <td>
-            @Model.Sum(x => x.PayedSum) лв.
+            @Model.Sum(x => x.PayedSum) €
         </td>
     </tr>
 </table>
@@ -268,7 +274,11 @@
                 url="PrintShortIncomes";
             }
 
-            window.open("Incomes/" + url + "?detectionId=" + @ViewBag.DetectionId, "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=5, width=1024, height=1024, toolbar=no, titlebar=no");
+            window.open("Incomes/" + url + "?detectionId=" + @ViewBag.DetectionId, "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=5, width=1460, height=1024, toolbar=no, titlebar=no");
+        }
+
+        function openPaymentsReport(unitId, detectionId) {
+            window.open("Reports/PrintUnitPayments?unitId=" + unitId + "&fromDet=" + detectionId + "&toDet=" + detectionId, "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=5, width=648, height=728, toolbar=no, titlebar=no");
         }
 
     </script>

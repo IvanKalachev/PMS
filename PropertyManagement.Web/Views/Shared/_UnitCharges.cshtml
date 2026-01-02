@@ -26,10 +26,10 @@
                     @ch.Expense.Service.Name
                 </td>
                  <td>
-                    @ch.SumToPay лв.
+                    @ch.SumToPay €
                 </td>
                 <td>
-                    @ch.PayedSum лв.
+                    @ch.PayedSum €
                 </td>
             </tr>
             
@@ -39,10 +39,10 @@
                 Общо
             </td>
             <td>
-                @charge.ChargesTotal лв.
+                @charge.ChargesTotal €
             </td>
             <td>
-                @charge.PaidTotal лв.
+                @charge.PaidTotal €
             </td>
         </tr>
     </table>
@@ -54,13 +54,13 @@
 @{var remainTopay = totalSum - payedSum; }
 
 <div class="unpaid_total">
-Общо дължима сума: @totalSum лв.
+Общо дължима сума: @totalSum €
 </div>
 
 <div class="unpaid_total" style="background-color:Green">
-Общо платено: @payedSum лв.
+Общо платено: @payedSum €
 </div>
 
 <div class="unpaid_total" style="background-color:#C00000">
-Оставащо за плащане: @remainTopay лв.
+Оставащо за плащане: @remainTopay €
 </div>

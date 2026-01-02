@@ -195,6 +195,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ComboItem.cs" />
+    <Compile Include="Helpers\DateTimeExtensions.cs" />
     <Compile Include="Helpers\ErrorType.cs" />
     <Compile Include="Helpers\Months.cs" />
     <Compile Include="Helpers\PMHelper.cs" />
@@ -211,6 +212,8 @@
     <Compile Include="Models\ProfitModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\StatementModel.cs" />
+    <Compile Include="Models\StatementSimpleModel.cs" />
+    <Compile Include="Models\StatementsListModel.cs" />
     <Compile Include="Views\ReportUnitModel.cs" />
     <Compile Include="Models\StatisticsModel.cs" />
     <Compile Include="Models\UnitModel.cs" />
@@ -403,6 +406,7 @@
     <Content Include="Views\Reports\_UnitResMoney.cshtml" />
     <Content Include="Views\Reports\PrintUnitPayments.cshtml" />
     <Content Include="Views\Nomenclatures\DetectionsPartial.cshtml" />
+    <Content Include="Views\Statements\ViewStatement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="PMSReports\UnitChargesReport.resx">

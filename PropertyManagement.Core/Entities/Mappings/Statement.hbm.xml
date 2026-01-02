@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="PropertyManagement.Core"
+                   namespace="PropertyManagement.Core.Entities">
+  <class name="Statement" table="Statements">
+    <id name="Id" type="Int64">
+      <generator class="identity"/>
+    </id>
+    <many-to-one name="Detection" column="DetectionId" class="PropertyManagement.Core.Entities.Detection, PropertyManagement.Core" />
+    <property name="Data" />
+    <property name="InsertDate" />
+  </class>
+</hibernate-mapping>

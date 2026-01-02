@@ -1,4 +1,5 @@
 ﻿@model IList<PropertyManagement.Core.Entities.ResMoney>
+@using PropertyManagement.Web.Helpers
 
 @{
     Layout = "~/Views/Shared/_PrintLayout.cshtml";
@@ -26,10 +27,10 @@
                 @PropertyManagement.Web.Helpers.MonthsYears.GetMonth(item.Detection.Month) @item.Detection.Year г.
             </td>
             <td>
-                @item.PayedSum лв.
+                @item.PayedSum €
             </td>
             <td>
-                @item.InsertDate.ToShortDateString()
+                @item.InsertDate.ToBgDateTime()
             </td>
         </tr>
     }
@@ -38,7 +39,7 @@
                 Общо:
             </td>
             <td colspan="2" class="bold">
-                @Model.Sum(x => x.PayedSum) лв.
+                @Model.Sum(x => x.PayedSum) €
             </td>
         </tr>
 </table>

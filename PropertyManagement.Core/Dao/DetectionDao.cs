@@ -63,5 +63,36 @@ namespace PropertyManagement.Core.Dao
                    .OrderByDescending(x => x.Year).ThenByDescending(x => x.Month)
                    .Select(x => x.Id).FirstOrDefault();
         }
+
+        public List<Detection> GetDetectionsWithoutStatements()
+        {
+            var result = new List<Detection>();
+
+            var detections = GetAll();
+            if (detections != null && detections.Any())
+            {
+                var statements = CurrentSession.Query<Statement>()
+                                               .Fetch(x => x.Detection)
+                                               .ToList();
+
+                if (statements != null && statements.Any())
+                {
+                    foreach(var detection in detections)
+                    {
+                        var detectionStatement = statements.FirstOrDefault(x => x.Detection.Id == detection.Id);
+                        if (detectionStatement == null)
+                        {
+                            result.Add(detection);
+                        }
+                    }
+                }
+                else
+                {
+                    result = detections;
+                }
+            }
+
+            return result.OrderByDescending(x => x.Id).ToList();
+        }
     }
 }

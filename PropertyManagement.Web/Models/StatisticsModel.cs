@@ -14,7 +14,7 @@ namespace PropertyManagement.Web.Models
 
         public decimal Saldo { get; set; }
 
-        public decimal SaldoTo2014 { get; set; }
+        public decimal SaldoTo2025 { get; set; }
 
         public decimal TotalSaldo { get; set; }
       

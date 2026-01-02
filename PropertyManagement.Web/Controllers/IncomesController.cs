@@ -219,7 +219,7 @@ namespace PropertyManagement.Web.Controllers
             sb.Append("</" + thTd + ">");
 
             sb.Append("<" + thTd + " class=\"bold\">");
-            sb.Append("Внесени плащания за месеца");
+            sb.Append("Внесени плащания за месеца (в брой)");
             sb.Append("</" + thTd + ">");
 
             sb.Append("<" + thTd + " class=\"bold\">");
@@ -230,7 +230,7 @@ namespace PropertyManagement.Web.Controllers
             if (forPrint)
             {
                 sb.Append("<" + thTd + " class=\"bold\" align=\"center\">");
-                sb.Append("Получена сума");
+                sb.Append("Получена сума (в брой)");
                 sb.Append("</" + thTd + ">");
 
                 sb.Append("<" + thTd + " class=\"bold\" align=\"center\">");
@@ -274,47 +274,63 @@ namespace PropertyManagement.Web.Controllers
                     if (hasCharge == null)
                     {
                         sb.Append("<td " + printHeight + ">");
-                        sb.Append("0.00 лв.");
+                        sb.Append("0.00 €");
                         sb.Append("</td>");
                     }
                     else
                     {
                         sb.Append("<td " + printHeight + ">");
-                        sb.Append(hasCharge.SumToPay.ToString("0.00") + " лв.");
+                        sb.Append(hasCharge.SumToPay.ToString("0.00") + " €");
                         sb.Append("</td>");
                     }
                    
                 }
 
                 sb.Append("<td class=\"bold\" " + printHeight + ">");
-                sb.Append(charge.SumToPay.ToString("0.00") + " лв.");
+                sb.Append("<div>");
+                sb.Append(charge.SumToPay.ToString("0.00") + " €");
+                sb.Append("</div>");
+                if (forPrint && ShowBGNEquivalent)
+                {
+                    sb.Append("<div>");
+                    sb.Append(PMHelper.ConvertToBGN(charge.SumToPay));
+                    sb.Append("</div>");
+                }
                 sb.Append("</td>");
 
                 sb.Append("<td " + printHeight + ">");
-                sb.Append(charge.PrevSaldo.ToString("0.00") + " лв.");
+                sb.Append(charge.PrevSaldo.ToString("0.00") + " €");
                 sb.Append("</td>");
 
 
                 sb.Append("<td " + printHeight + ">");
-                sb.Append(charge.ResMoney.ToString("0.00") + " лв.");
+                sb.Append(charge.ResMoney.ToString("0.00") + " €");
                 sb.Append("</td>");
 
 
                 sb.Append("<td class=\"bold\" " + printHeight + ">");
-                sb.Append(charge.GrandTotal.ToString("0.00") + " лв.");
+                sb.Append("<div>");
+                sb.Append(charge.GrandTotal.ToString("0.00") + " €");
+                sb.Append("</div>");
+                if (forPrint && ShowBGNEquivalent)
+                {
+                    sb.Append("<div>");
+                    sb.Append(PMHelper.ConvertToBGN(charge.GrandTotal));
+                    sb.Append("</div>");
+                }
                 sb.Append("</td>");
 
 
                 //sb.Append("<td>");
                 //if (!forPrint)
                 //{
-                //    sb.Append(charge.RealPayedSum.ToString("0.00") + " лв.");
+                //    sb.Append(charge.RealPayedSum.ToString("0.00") + " €");
                 //}
                 //else
                 //{
                 //    if (charge.RealPayedSum != 0)
                 //    {
-                //        sb.Append(charge.RealPayedSum.ToString("0.00") + " лв.");
+                //        sb.Append(charge.RealPayedSum.ToString("0.00") + " €");
                 //    }
                 //    else
                 //    {
@@ -358,25 +374,41 @@ namespace PropertyManagement.Web.Controllers
                                      select d).ToList();
 
                  sb.Append("<td class=\"full_incomes_footer\">");
-                 sb.Append(chargesToSum.Sum(x => x.SumToPay).ToString("0.00") + " лв.");
+                 sb.Append(chargesToSum.Sum(x => x.SumToPay).ToString("0.00") + " €");
                  sb.Append("</td>");
 
             }
 
             sb.Append("<td class=\"full_incomes_footer\">");
-            sb.Append(incomes.Sum(x => x.SumToPay).ToString("0.00") + " лв.");
+            sb.Append("<div>");
+            sb.Append(incomes.Sum(x => x.SumToPay).ToString("0.00") + " €");
+            sb.Append("</div>");
+            if (forPrint && ShowBGNEquivalent)
+            {
+                sb.Append("<div>");
+                sb.Append(PMHelper.ConvertToBGN(incomes.Sum(x => x.SumToPay)));
+                sb.Append("</div>");
+            }
             sb.Append("</td>");
 
             sb.Append("<td class=\"full_incomes_footer\">");
-            sb.Append(incomes.Sum(x => x.PrevSaldo).ToString("0.00") + " лв.");
+            sb.Append(incomes.Sum(x => x.PrevSaldo).ToString("0.00") + " €");
             sb.Append("</td>");
 
             sb.Append("<td class=\"full_incomes_footer\">");
-            sb.Append(incomes.Sum(x => x.ResMoney).ToString("0.00") + " лв.");
+            sb.Append(incomes.Sum(x => x.ResMoney).ToString("0.00") + " €");
             sb.Append("</td>");
 
             sb.Append("<td class=\"full_incomes_footer\">");
-            sb.Append(incomes.Sum(x => x.GrandTotal).ToString("0.00") + " лв.");
+            sb.Append("<div>");
+            sb.Append(incomes.Sum(x => x.GrandTotal).ToString("0.00") + " €");
+            sb.Append("</div>");
+            if (forPrint && ShowBGNEquivalent)
+            {
+                sb.Append("<div>");
+                sb.Append(PMHelper.ConvertToBGN(incomes.Sum(x => x.GrandTotal)));
+                sb.Append("</div>");
+            }
             sb.Append("</td>");
 
 
@@ -412,6 +444,7 @@ namespace PropertyManagement.Web.Controllers
             var incomes = GetIncomes(detectionId);
             var detection = CurrentSession.Get<Detection>(detectionId);
             ViewBag.Month = MonthsYears.GetMonth(detection.Month) + " " + detection.Year + " г.";
+            ViewBag.ShowBGNEquivalent = ShowBGNEquivalent;
             return View(incomes);
         }
     }

@@ -31,7 +31,7 @@
                 @Html.ActionLink(Model.UnitsWithCharges[i].FamilyName, "ViewUnitUnpaidCharges", "Home", new { unitId = Model.UnitsWithCharges[i].Id}, new { @class = "bold" })
             </td>
             <td>
-                <span class="red">@Model.UnitsWithCharges[i].Balance лв.</span>
+                <span class="red">@Model.UnitsWithCharges[i].Balance €</span>
             </td>
         </tr>
     }
@@ -40,7 +40,7 @@
                 Общо:
             </td>
             <td>
-                <span class="red">@Model.UnitsWithCharges.Sum(x => x.Balance) лв.</span>
+                <span class="red">@Model.UnitsWithCharges.Sum(x => x.Balance) €</span>
             </td>
         </tr>
     </table>
@@ -62,7 +62,7 @@
             </td>
             <td>
                 @{decimal balance = -1 * Model.UnitsWithPositiveSaldo[i].Balance;}
-                <span class="green">@balance лв.</span>
+                <span class="green">@balance €</span>
             </td>
         </tr>
      }
@@ -72,7 +72,7 @@
             </td>
             <td>
                 @{decimal total = (Model.UnitsWithPositiveSaldo.Sum(x => x.Balance) * -1);}
-                <span class="green">@total лв.</span>
+                <span class="green">@total €</span>
             </td>
         </tr>
     </table>
@@ -93,11 +93,11 @@
            <td>
             @if (Model.TotalSaldo > 0)
             {
-                <span class="green">@Model.SaldoTo2014.ToString("0.00") + @Model.Saldo.ToString("0.00") = @Model.TotalSaldo.ToString("0.00") лв.</span>
+                <span class="green">@Model.SaldoTo2025.ToString("0.00") + @Model.Saldo.ToString("0.00") = @Model.TotalSaldo.ToString("0.00") €</span>
             }
             else
             {
-                <span class="red">@Model.SaldoTo2014 + @Model.Saldo.ToString("0.00") = @Model.TotalSaldo.ToString("0.00") лв.</span>
+                <span class="red">@Model.SaldoTo2025 + @Model.Saldo.ToString("0.00") = @Model.TotalSaldo.ToString("0.00") €</span>
             }
               
            </td>

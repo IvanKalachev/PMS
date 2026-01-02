@@ -54,7 +54,7 @@
                 </td>
                 <td>
                     <div class="numeric">
-                        @Html.Editor("sum") лв.
+                        @Html.Editor("sum") €
                     </div>
                     <br />
                 </td>
@@ -90,7 +90,7 @@
                 </td>
                 <td>
                     <div class="numeric">
-                        @Html.Editor("individualSum") лв.
+                        @Html.Editor("individualSum") €
                     </div>
                 </td>
                 <td>
@@ -109,7 +109,7 @@
     <br />
 </div>
     <div class="expense_total">
-        Общо: <span id="total">@Model.Expenses.Sum(x => x.Sum)</span> лв.
+        Общо: <span id="total">@Model.Expenses.Sum(x => x.Sum)</span> €
     </div>
     <br />
     @using (Html.BeginForm("ResetExpenseDistribution", "ExpenseDistribution"))

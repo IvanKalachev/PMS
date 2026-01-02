@@ -35,7 +35,7 @@
                 @profit.Service.Name
             </td>
             <td>
-                @profit.Sum лв.
+                @profit.Sum €
             </td>
         </tr>
         }
@@ -69,7 +69,7 @@
                 @payedCharge.Detection.Year
             </td>
             <td>
-                @payedCharge.Sum лв.
+                @payedCharge.Sum €
             </td>
         </tr>
         }
@@ -96,7 +96,7 @@
                 @notPayedCharge.Unit.FamilyName ап. @notPayedCharge.Unit.Number ет. @notPayedCharge.Unit.Floor
             </td>
             <td>
-                @notPayedCharge.Sum лв.
+                @notPayedCharge.Sum €
             </td>
         </tr>
         }
@@ -107,7 +107,7 @@
                     @notPayedChargeInCurrentDet.Unit.FamilyName ап. @notPayedChargeInCurrentDet.Unit.Number ет. @notPayedChargeInCurrentDet.Unit.Floor
                 </td>
                 <td>
-                    @notPayedChargeInCurrentDet.Sum лв.
+                    @notPayedChargeInCurrentDet.Sum €
                 </td>
             </tr>
         }
@@ -115,7 +115,7 @@
     <tr>
         <td colspan="3" align="center" class="total">
             Общо приходи:
-            @Html.DisplayFor(m => m.TotalPrihodi) лв.
+            @Html.DisplayFor(m => m.TotalPrihodi) €
         </td>
     </tr>
 </table>
@@ -148,7 +148,7 @@
                 @profit.Service.Name
             </td>
             <td>
-                @profit.Sum лв.
+                @profit.Sum €
             </td>
         </tr>
         }
@@ -175,7 +175,7 @@
                 @extraExpense.Service.Name
             </td>
             <td>
-                @extraExpense.Sum лв.
+                @extraExpense.Sum €
             </td>
         </tr>
         }
@@ -183,19 +183,19 @@
     <tr>
         <td colspan="3" align="center" class="total">
             Общо разходи:
-            @Html.DisplayFor(m => m.TotalRazhodi) лв.
+            @Html.DisplayFor(m => m.TotalRazhodi) €
         </td>
     </tr>
 </table>
 <br />
 <br />
 <div class="total">
-    Общо приходи: @Html.DisplayFor(m => m.TotalPrihodi) лв.
+    Общо приходи: @Html.DisplayFor(m => m.TotalPrihodi) €
 </div>
 <div class="total">
-    Общо разходи: @Html.DisplayFor(m => m.TotalRazhodi) лв.
+    Общо разходи: @Html.DisplayFor(m => m.TotalRazhodi) €
 </div>
 <div class="total">
-    Остатък: @Html.DisplayFor(m => m.RemainingSum) лв.
+    Остатък: @Html.DisplayFor(m => m.RemainingSum) €
 </div>
 @Html.Partial("_PrintFooter")

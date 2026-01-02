@@ -9,6 +9,14 @@
         @using (Html.BeginForm("CreateDetection", "Nomenclatures"))
         {
             @Html.ValidationSummary(true)
+            if (TempData["CreateDetectionError"] != null)
+            {
+                <div style="background-color: burlywood; padding: 10px; border-radius: 3px; margin-top: 15px">
+                    <div style="font-size: 16px">
+                        @TempData["CreateDetectionError"]
+                    </div>
+                </div>
+            }
             <table>
                 <tr>
                     <td>

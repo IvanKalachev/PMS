@@ -1,4 +1,5 @@
 ﻿@model List<PropertyManagement.Web.Models.IncomesModel>
+@using PropertyManagement.Web.Helpers
 @{
     ViewBag.Title = "PrintShortIncomes";
     Layout = "~/Views/Shared/_PrintLayout.cshtml";
@@ -32,7 +33,7 @@
             Задължения от предишни месеци
         </td>
         <td class="bold">
-            Внесени плащания за месеца
+            Внесени плащания за месеца (в брой)
         </td>
         <td class="bold">
             Общо за плащане
@@ -65,16 +66,32 @@
                 @Model[i].Unit.PercentIdealParts %
             </td>
             <td class="bold" height="38">
-                @Model[i].SumToPay лв.
+                <div>
+                    @Model[i].SumToPay €
+                </div>
+                @if (ViewBag.ShowBGNEquivalent)
+                {
+                    <div>
+                        @PMHelper.ConvertToBGN(Model[i].SumToPay)
+                    </div>
+                }
             </td>
             <td height="38">
-               @Model[i].PrevSaldo.ToString("0.00") лв.
+               @Model[i].PrevSaldo.ToString("0.00") €
             </td>
             <td height="38">
-                @Model[i].PayedSum.ToString("0.00") лв.
+                @Model[i].PayedSum.ToString("0.00") €
             </td>
             <td class="bold" height="38">
-               @Model[i].GrandTotal.ToString("0.00") лв.
+                <div>
+                    @Model[i].GrandTotal.ToString("0.00") €
+                </div>
+                @if (ViewBag.ShowBGNEquivalent)
+                {
+                    <div>
+                        @PMHelper.ConvertToBGN(Model[i].GrandTotal)
+                    </div>
+                }
             </td>
         </tr>
     }
@@ -90,18 +107,40 @@
             @Model.Sum(x => x.Unit.PercentIdealParts) %
         </td>
         <td>
-            @Model.Sum(x => x.SumToPay).ToString("0.00") лв.
+            <div>
+                @Model.Sum(x => x.SumToPay).ToString("0.00") €
+            </div>
+            @if (ViewBag.ShowBGNEquivalent)
+            {
+                <div>
+                    @PMHelper.ConvertToBGN(Model.Sum(x => x.SumToPay))
+                </div>
+            }
         </td>
         <td>
-            @Model.Sum(x => x.PrevSaldo).ToString("0.00") лв.
+            @Model.Sum(x => x.PrevSaldo).ToString("0.00") €
         </td>
         <td>
-            @Model.Sum(x => x.PayedSum).ToString("0.00") лв.
+            @Model.Sum(x => x.PayedSum).ToString("0.00") €
         </td>
         <td>
-            @Model.Sum(x => x.GrandTotal).ToString("0.00") лв.
+            <div>
+                @Model.Sum(x => x.GrandTotal).ToString("0.00") €
+            </div>
+            @if (ViewBag.ShowBGNEquivalent)
+            {
+                <div>
+                    @PMHelper.ConvertToBGN(Model.Sum(x => x.GrandTotal))
+                </div>
+            }
         </td>
     </tr>
 </table>
+@if(ViewBag.ShowBGNEquivalent)
+{
+    <div style="margin-top: 5px; font-size: 16px">
+        Стойностите в лева са посочени единствено за целите на двойно обозначаване по смисъла на Закона за въвеждане на еврото в Република България и са изчислени по официалния курс на БНБ <span style="font-weight: bold">1 EUR = 1,95583 BGN.</span>
+    </div>
+}
 
 @Html.Partial("_PrintFooter")

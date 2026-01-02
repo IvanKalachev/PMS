@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using PropertyManagement.Web.Models;
 using PropertyManagement.Core.Dao;
+using System.Configuration;
 
 namespace PropertyManagement.Web.Controllers
 {
@@ -30,10 +31,13 @@ namespace PropertyManagement.Web.Controllers
 
             //model.Saldo = incomesSum - expensesSum;
 
+            decimal saldoTo2025 = 0;
+            Decimal.TryParse(ConfigurationManager.AppSettings["startSaldo"], out saldoTo2025);
+
             // !!!!! ЩЕ БАВИ !!!!!!!
             model.Saldo = getTotalSaldo();
-            model.SaldoTo2014 = 2410.28M;
-            model.TotalSaldo = model.Saldo + model.SaldoTo2014;
+            model.SaldoTo2025 = saldoTo2025;
+            model.TotalSaldo = model.Saldo + model.SaldoTo2025;
 
             return View(model);
         }

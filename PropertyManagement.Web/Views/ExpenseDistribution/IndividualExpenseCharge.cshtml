@@ -30,7 +30,7 @@
             <tr>
                 <td>
                     <div class="expenseDistribution">
-                        Сума: @Model.Sum лв.
+                        Сума: @Model.Sum €
                     </div>
                 </td>
             </tr>
@@ -88,13 +88,13 @@
                 @Html.DisplayFor(m => m.Unit.Floor)
             </td>
             <td>
-                <span class="red">@Html.DisplayFor(m => m.Sum) лв.</span>
+                <span class="red">@Html.DisplayFor(m => m.Sum) €</span>
             </td>
         </tr>
         <tr>
             <td colspan="6" style="background-color: Silver; font-weight: bold; padding: 5px;
                 padding-right: 100px" align="right">
-                <span class="red">Общо: @Model.Sum лв.</span>
+                <span class="red">Общо: @Model.Sum €</span>
             </td>
         </tr>
         @if (Model.IsDistributed == false)

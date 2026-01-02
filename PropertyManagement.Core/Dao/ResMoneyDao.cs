@@ -40,6 +40,27 @@ namespace PropertyManagement.Core.Dao
             return resmoney.Sum(x => x.PayedSum);
         }
 
+        // Връща всички внасяния на пари и дата на внасяне за даден апартамент и подаден месец
+        public List<System.Tuple<decimal, DateTime>> GetPaymentsByUnitAndDetection(Int64 unitId, Int64 detectionId)
+        {
+            var resmoney = CurrentSession.Query<ResMoney>()
+                            .Where(x => x.Unit.Id == unitId)
+                            .Where(x => x.Detection.Id == detectionId)
+                            .ToList();
+
+            var result = new List<System.Tuple<decimal, DateTime>>();
+
+            if (resmoney != null && resmoney.Any())
+            {
+                foreach(var item in resmoney)
+                {
+                    result.Add(new System.Tuple<decimal, DateTime>(item.PayedSum, item.InsertDate));
+                }
+            }
+
+            return result;
+        }
+
         // Връща всички внесени пари за даден месец
         public IList<ResMoney> GetAllByDetection(Int64 detectionId)
         {

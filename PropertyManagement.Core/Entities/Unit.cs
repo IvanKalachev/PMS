@@ -66,7 +66,7 @@ namespace PropertyManagement.Core.Entities
         {
             get
             {
-                return this.FamilyName + " ет " + this.Floor + " ап " + this.Number;
+                return this.FamilyName + " ет. " + this.Floor + " ап. " + this.Number;
             }
         }
 

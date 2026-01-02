@@ -7,6 +7,7 @@ using PropertyManagement.Core.Dao;
 using PropertyManagement.Web.Models;
 using PropertyManagement.Web.Helpers;
 using PropertyManagement.Core.Entities;
+using System.Text;
 
 namespace PropertyManagement.Web.Controllers
 {
@@ -97,16 +98,29 @@ namespace PropertyManagement.Web.Controllers
         {
             try
             {
+                DetectionDao detеctionDao = new DetectionDao(CurrentSession);
+                var detectionsWithoutStatements = detеctionDao.GetDetectionsWithoutStatements();
+                if (detectionsWithoutStatements != null && detectionsWithoutStatements.Any())
+                {
+                    var months = new StringBuilder();
+                    foreach(var dws in detectionsWithoutStatements)
+                    {
+                        months.Append("[" + MonthsYears.GetMonth(dws.Month) + " " + dws.Year + "]");
+                    }
+
+                    TempData["CreateDetectionError"] = "Има месец(и) за които няма генерирани отчети - " + months.ToString() +". За да добавите нов отчетен период моля, генерирайте отчети за всички текущи отчетни периоди.";
+                    return RedirectToAction("Index");
+                }
+
                 int month = Int32.Parse(collection["Month"]);
                 int year = Int32.Parse(collection["Year"]);
 
-                DetectionDao detеctionDao = new DetectionDao(CurrentSession);
+                
                 Detection detection = new Detection { Month = month, Year = year };
                 if (!detеctionDao.Create(detection))
                 {
                     ErrorModel error = new ErrorModel(ErrorType.error, "Съществува отчетен период с избраните параметри!");
                     TempData["Error"] = error;
-
                 }
 
                 return RedirectToAction("Index");

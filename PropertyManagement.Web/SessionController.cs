@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NHibernate;
+using System.Configuration;
 
 namespace PropertyManagement.Web
 {
@@ -20,6 +21,17 @@ namespace PropertyManagement.Web
                 }
 
                 return _currentSession;
+            }
+        }
+        
+        public bool ShowBGNEquivalent
+        {
+            get
+            {
+                bool showBgnEquivalent = false;
+                Boolean.TryParse(ConfigurationManager.AppSettings["showBGNEquivalent"], out showBgnEquivalent);
+
+                return showBgnEquivalent;
             }
         } 
     }

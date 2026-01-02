@@ -13,7 +13,7 @@
             <hgroup class="title">
                 <span class="expenseDistribution">Разпределение на разход "@expense.Service.Name" за месец @PropertyManagement.Web.Helpers.MonthsYears.GetMonth(expense.Detection.Month) @expense.Detection.Year</span>
                  <div class="expenseDistribution">
-                    Сума: @expense.Sum лв.
+                    Сума: @expense.Sum €
                 </div>
             </hgroup>
         </div>
@@ -59,14 +59,14 @@
                     @Html.DisplayFor(m => m[i].Unit.Floor)
                 </td>
                 <td>
-                    <span class="red">@Model[i].SumToPay лв.</span>
+                    <span class="red">@Model[i].SumToPay €</span>
                 </td>
             </tr>
         }
         <tr>
             <td colspan="6" style="background-color: Silver; font-weight: bold; padding: 5px; padding-right:100px" 
                 align="right">
-                <span class="red">Общо: @Model.Sum(x => x.SumToPay) лв.</span>
+                <span class="red">Общо: @Model.Sum(x => x.SumToPay) €</span>
             </td>
         </tr>
     </table>

@@ -61,5 +61,14 @@ namespace PropertyManagement.Web.Helpers
             return result;
         }
 
+        public static string ConvertToBGN(decimal amountEur)
+        {
+            const decimal EurToBgn = 1.95583m;
+
+            decimal amountBgn = amountEur * EurToBgn;
+            decimal rounded = Math.Round(amountBgn, 2, MidpointRounding.AwayFromZero);
+
+            return rounded.ToString("0.00") + " лв.";
+        }
     }
 }

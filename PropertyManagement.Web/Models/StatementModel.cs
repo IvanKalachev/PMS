@@ -8,6 +8,8 @@ namespace PropertyManagement.Web.Models
 {
     public class StatementModel
     {
+        public Int64 StatementId { get; set; }
+
         // всички приходи за месеца
         public IList<ProfitModel> Profits { get; set; }
 
