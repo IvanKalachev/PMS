@@ -20,6 +20,7 @@ namespace PropertyManagement.Web.Controllers
         {
             DetectionDao detectionDao = new DetectionDao(CurrentSession);
             UnitChargeDao unitChargeDao = new UnitChargeDao(CurrentSession);
+            StatamentDao statementDao = new StatamentDao(CurrentSession);
 
             IList<IncomesModel> incomes = new List<IncomesModel>();
 
@@ -29,8 +30,18 @@ namespace PropertyManagement.Web.Controllers
             }
             var detections = detectionDao.GetAll();
             ViewBag.DetectionsList = new SelectList(MonthsYears.GetComboDetections(detections), "Id", "Name", detectionId);
+            ViewBag.DetectionHasStatement = false;
 
-            incomes = GetIncomes(detectionId);
+            if (detectionId != null)
+            {
+                var statementForDetection = statementDao.GetStatementForDetection((Int64)detectionId);
+                if (statementForDetection != null)
+                {
+                    ViewBag.DetectionHasStatement = true;
+                }
+            }
+           
+           incomes = GetIncomes(detectionId);
 
             ViewBag.DetectionId = detectionId;
 
@@ -138,7 +149,7 @@ namespace PropertyManagement.Web.Controllers
                            DetectionId = dataGroup.Select(x => x.Expense.Detection.Id).FirstOrDefault(),
                            UnitCharges = unitChargeDao.GetAllByUnitAndDetection(dataGroup.Key.Id, detection.Id),
                            ResMoney = resMoneyDao.GetSumByUnitAndDetection(dataGroup.Key.Id, detection.Id)
-                       }).ToList();
+                       }).OrderBy(x => x.Unit.Floor).ThenBy(x => x.Unit.Number).ToList();
 
             return incomes;
         }

@@ -18,7 +18,7 @@
     {
         @Html.Partial("_InfoPartial", (PropertyManagement.Web.Models.ErrorModel)ViewBag.Error);
     }
-    
+
     @using (Ajax.BeginForm("AddExpense", "Expenses", new AjaxOptions { UpdateTargetId = "addingExpenses", HttpMethod = "POST", InsertionMode = InsertionMode.InsertBefore, OnComplete="updateSaldo" }))
     {
          if (ViewBag.Error != null)
@@ -35,69 +35,80 @@
        })
         </div>
         <br />
-        <table>
-            <tr>
-                <th>
-                    Услуга
-                </th>
-                <th>
-                    Сума
-                </th>
-                <th>
-                </th>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DropDownList("serviceId", (SelectList)ViewBag.ServicesList, new { style = "width:305px;", id = "selectService" })
-                    <br />
-                    @Html.CheckBox("doNoDestribute", false) без разпределяне / начисляване
-                </td>
-                <td>
-                    <div class="numeric">
-                        @Html.Editor("sum") €
-                    </div>
-                    <br />
-                </td>
-                <td>
-                    <div>
-                        <input type="submit" value="Добави" name="overHeadButton"/>
-                    </div>
-                    <br />
-                </td>
-            </tr>
-        </table>
-        <br />
-        <table>
-            <tr>
-                <th>
-                    Услуга
-                </th>
-                <th>
-                    Апартамент
-                </th>
-                <th>
-                    Сума
-                </th>
-                <th>
-                </th>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DropDownList("individualService", (SelectList)ViewBag.ServicesList, new { style = "width:305px;", id = "selectService" })
-                </td>
-                <td>
-                    @Html.DropDownList("unitId", (SelectList)ViewBag.UnitsList, new { style = "width:250px;", id = "unitId" })
-                </td>
-                <td>
-                    <div class="numeric">
-                        @Html.Editor("individualSum") €
-                    </div>
-                </td>
-                <td>
-                    <input type="submit" value="Добави" name="individualButton"/>
-                </td>
-            </tr>
-        </table>
+        if (ViewBag.DetectionHasStatement == false)
+        {
+            <table>
+                <tr>
+                    <th>
+                        Услуга
+                    </th>
+                    <th>
+                        Сума
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DropDownList("serviceId", (SelectList)ViewBag.ServicesList, new { style = "width:305px;", id = "selectService" })
+                        <br />
+                        @Html.CheckBox("doNoDestribute", false) без разпределяне / начисляване
+                    </td>
+                    <td>
+                        <div class="numeric">
+                            @Html.Editor("sum") €
+                        </div>
+                        <br />
+                    </td>
+                    <td>
+                        <div>
+                            <input type="submit" value="Добави" name="overHeadButton" />
+                        </div>
+                        <br />
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <table>
+                <tr>
+                    <th>
+                        Услуга
+                    </th>
+                    <th>
+                        Апартамент
+                    </th>
+                    <th>
+                        Сума
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DropDownList("individualService", (SelectList)ViewBag.ServicesList, new { style = "width:305px;", id = "selectService" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("unitId", (SelectList)ViewBag.UnitsList, new { style = "width:250px;", id = "unitId" })
+                    </td>
+                    <td>
+                        <div class="numeric">
+                            @Html.Editor("individualSum") €
+                        </div>
+                    </td>
+                    <td>
+                        <input type="submit" value="Добави" name="individualButton" />
+                    </td>
+                </tr>
+            </table>
+        }
+    }
+    @if (ViewBag.DetectionHasStatement == true)
+    {
+        <div style="background-color: darkolivegreen; padding: 10px; border-radius: 3px; margin-top: 15px">
+            <div style="font-size: 16px; color: white">
+                За този отчетен период има генериран отчет, поради което не е възможно да се добавят, начисляват и разпределят услуги.
+            </div>
+        </div>
     }
     <hr />
     <div id="addingExpenses">

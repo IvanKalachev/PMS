@@ -20,6 +20,8 @@ namespace PropertyManagement.Web.Controllers
         public ActionResult Index(Int64? detectionId)
         {
             DetectionDao detectionDao = new DetectionDao(CurrentSession);
+            StatamentDao statementDao = new StatamentDao(CurrentSession);
+            ViewBag.DetectionHasStatement = false;
             var detections = detectionDao.GetAll();
             if (detectionId != null)
             {
@@ -42,13 +44,30 @@ namespace PropertyManagement.Web.Controllers
             }
             else
             {
-                detectionExpenses = expenseDao.LoadByDetection(detections.FirstOrDefault().Id);
+                if (detections != null && detections.Any())
+                {
+                    var defaultDetection = detections.FirstOrDefault();
+                    if (defaultDetection != null)
+                    {
+                        detectionId = defaultDetection.Id;
+                        detectionExpenses = expenseDao.LoadByDetection((Int64)detectionId);
+                    }
+                }
             }
 
             foreach(var expense in detectionExpenses)
             {
                 expensesToShow.Add(PMHelper.ConvertTo<ExpenseModel>(expense));
 
+            }
+
+            if (detectionId != null)
+            {
+                var statementForDetection = statementDao.GetStatementForDetection((Int64)detectionId);
+                if (statementForDetection != null)
+                {
+                    ViewBag.DetectionHasStatement = true;
+                }
             }
 
             ExpensesViewModel model = new ExpensesViewModel();

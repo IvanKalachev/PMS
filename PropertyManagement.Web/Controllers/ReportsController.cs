@@ -92,7 +92,7 @@ namespace PropertyManagement.Web.Controllers
                                    Charges = (from d in charges
                                               where d.Expense.Detection.Id == dataGroup.Key.Id
                                               select d).ToList()
-                               }).ToList();
+                               }).OrderByDescending(x => x.Detection.Id).ToList();
 
             return unitCharges;
         }
