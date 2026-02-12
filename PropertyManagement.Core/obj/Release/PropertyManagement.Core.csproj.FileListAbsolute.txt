@@ -1,0 +1,8 @@
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\bin\Release\PropertyManagement.Core.dll
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\bin\Release\PropertyManagement.Core.pdb
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\bin\Release\Iesi.Collections.dll
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\bin\Release\NHibernate.dll
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\bin\Release\Iesi.Collections.xml
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\bin\Release\NHibernate.xml
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\obj\Release\PropertyManagement.Core.dll
+C:\Projects\PropertyManagement.Web\PropertyManagement.Core\obj\Release\PropertyManagement.Core.pdb

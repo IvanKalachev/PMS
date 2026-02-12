@@ -1,0 +1,46 @@
+﻿@model IList<PropertyManagement.Core.Entities.ResMoney>
+@using PropertyManagement.Web.Helpers
+
+@{
+    Layout = "~/Views/Shared/_PrintLayout.cshtml";
+}
+
+<h2>@System.Configuration.ConfigurationManager.AppSettings["propertyName"]</h2>
+<h2>@ViewBag.ReportTitle</h2>
+
+<table>
+    <tr class="bold">
+        <td width="56%">
+            Месец
+        </td>
+        <td width="22%">
+            Платена сума
+        </td>
+        <td width="22%">
+            Дата
+        </td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @PropertyManagement.Web.Helpers.MonthsYears.GetMonth(item.Detection.Month) @item.Detection.Year г.
+            </td>
+            <td>
+                @item.PayedSum €
+            </td>
+            <td>
+                @item.InsertDate.ToBgDateTime()
+            </td>
+        </tr>
+    }
+    <tr>
+            <td align="right">
+                Общо:
+            </td>
+            <td colspan="2" class="bold">
+                @Model.Sum(x => x.PayedSum) €
+            </td>
+        </tr>
+</table>
+

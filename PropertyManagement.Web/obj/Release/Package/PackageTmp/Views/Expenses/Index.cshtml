@@ -1,0 +1,162 @@
+﻿@model PropertyManagement.Web.Models.ExpensesViewModel
+@{
+    ViewBag.Title = "Добавяне и разпределяне на задължения";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <span class="page_title">Задължения - преглед, добавяне, разпределяне, начисляване</span>
+            </hgroup>
+        </div>
+    </section>
+}
+<div>
+
+    @if (ViewBag.Error != null)
+    {
+        @Html.Partial("_InfoPartial", (PropertyManagement.Web.Models.ErrorModel)ViewBag.Error);
+    }
+
+    @using (Ajax.BeginForm("AddExpense", "Expenses", new AjaxOptions { UpdateTargetId = "addingExpenses", HttpMethod = "POST", InsertionMode = InsertionMode.InsertBefore, OnComplete="updateSaldo" }))
+    {
+         if (ViewBag.Error != null)
+         {
+            @Html.Partial("_InfoPartial", (PropertyManagement.Web.Models.ErrorModel)ViewBag.Error);
+         }
+        
+        <div>
+            <span class="bold">Задължения за месец</span>  
+            @Html.DropDownList("detection", (SelectList)ViewBag.Detections, new
+       {
+           @id = "detectionsCombo",
+           onchange = "document.location.href = '/Expenses?detectionId='+this.options[this.selectedIndex].value;"
+       })
+        </div>
+        <br />
+        if (ViewBag.DetectionHasStatement == false)
+        {
+            <table>
+                <tr>
+                    <th>
+                        Услуга
+                    </th>
+                    <th>
+                        Сума
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DropDownList("serviceId", (SelectList)ViewBag.ServicesList, new { style = "width:305px;", id = "selectService" })
+                        <br />
+                        @Html.CheckBox("doNoDestribute", false) без разпределяне / начисляване
+                    </td>
+                    <td>
+                        <div class="numeric">
+                            @Html.Editor("sum") €
+                        </div>
+                        <br />
+                    </td>
+                    <td>
+                        <div>
+                            <input type="submit" value="Добави" name="overHeadButton" />
+                        </div>
+                        <br />
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <table>
+                <tr>
+                    <th>
+                        Услуга
+                    </th>
+                    <th>
+                        Апартамент
+                    </th>
+                    <th>
+                        Сума
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DropDownList("individualService", (SelectList)ViewBag.ServicesList, new { style = "width:305px;", id = "selectService" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("unitId", (SelectList)ViewBag.UnitsList, new { style = "width:250px;", id = "unitId" })
+                    </td>
+                    <td>
+                        <div class="numeric">
+                            @Html.Editor("individualSum") €
+                        </div>
+                    </td>
+                    <td>
+                        <input type="submit" value="Добави" name="individualButton" />
+                    </td>
+                </tr>
+            </table>
+        }
+    }
+    @if (ViewBag.DetectionHasStatement == true)
+    {
+        <div style="background-color: darkolivegreen; padding: 10px; border-radius: 3px; margin-top: 15px">
+            <div style="font-size: 16px; color: white">
+                За този отчетен период има генериран отчет, поради което не е възможно да се добавят, начисляват и разпределят услуги.
+            </div>
+        </div>
+    }
+    <hr />
+    <div id="addingExpenses">
+    </div>
+    @foreach (var expense in Model.Expenses)
+    {
+        @Html.Partial("_AddedExpense", expense)
+    }
+    <br />
+</div>
+    <div class="expense_total">
+        Общо: <span id="total">@Model.Expenses.Sum(x => x.Sum)</span> €
+    </div>
+    <br />
+    @using (Html.BeginForm("ResetExpenseDistribution", "ExpenseDistribution"))
+    {
+        if (Model.CanResetExpenseDistribution)
+        {
+            @*<input type="submit" value="Зануляване" />
+            @Html.Hidden("detectionId", Model.Expenses[0].Detection.Id)*@
+        }
+
+    }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        function updateSaldo() {
+            var detectionId = $("#detectionsCombo").val();
+            var serviceURL = '/Expenses/GetTotal/'+detectionId;
+            $.ajax({
+                type: "POST",
+                url: serviceURL,
+                data: param = "",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: successFunc,
+                error: errorFunc
+            });
+
+            function successFunc(data, status) {
+                $("#total").html(data.sum);
+                console.log(data);
+            }
+
+            function errorFunc() {
+                //alert('error');
+            }
+        }
+   
+    </script>
+}

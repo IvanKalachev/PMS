@@ -1,0 +1,97 @@
+﻿@using GridMvc.Html
+@model PropertyManagement.Web.Models.UnitModel
+@{
+    ViewBag.Title = "Редактиране на единица / апартамент - Property Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <span class="page_title">Апартаменти - редакция</span>
+            </hgroup>
+        </div>
+    </section>
+}
+@using (Html.BeginForm())
+
+{
+    @Html.ValidationSummary(true)
+
+    <div id="parent">
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Balance)
+        <div id="left_div">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.FamilyName)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.FamilyName)
+                @Html.ValidationMessageFor(model => model.FamilyName)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Number)
+            </div>
+            <div class="numeric">
+                @Html.EditorFor(model => model.Number)
+                @Html.ValidationMessageFor(model => model.Number)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.MembersCount)
+            </div>
+            <div class="numeric">
+                @Html.EditorFor(model => model.MembersCount)
+                @Html.ValidationMessageFor(model => model.MembersCount)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PercentIdealParts)
+            </div>
+            <div class="numeric">
+                @Html.EditorFor(model => model.PercentIdealParts)
+                @Html.ValidationMessageFor(model => model.PercentIdealParts)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Floor)
+            </div>
+            <div class="numeric">
+                @Html.EditorFor(model => model.Floor)
+                @Html.ValidationMessageFor(model => model.Floor)
+            </div>
+            <div>
+                <br />
+                @Html.CheckBoxFor(model => model.Deactivated) Напуснали квартиранти / Необитаем (не участва в разпределяне и начисляване на такси)
+            </div>
+            <p>
+                <input type="submit" value="Запис" name="button"/>
+            </p>
+        </div>
+        <div id="right_div">
+            <div class="editor-label">
+                @Html.Label("Освобождаване от такса")
+            </div>
+            <div>
+                @Html.DropDownList("Service", (SelectList)ViewBag.Services)
+                <input type="submit" value="Добави" name="button"/>
+            </div>
+            <br />
+            @Html.Label("Добавени услуги")
+            <div style="width:300px">
+                @Html.Grid(Model.NoCharegeServices).Columns(columns =>
+                       {
+                           columns.Add(service => service.Name).Titled("").SetWidth(200);
+                           columns.Add(service => service.Id).Titled("").SetWidth(100)
+                                      .Sanitized(false)
+                                      .Encoded(false)
+                                      .RenderValueAs(service => Html.ActionLink("Изтриване", "RemoveService", new { serviceId = service.Id, unitId = Model.Id }));
+               
+                       })
+            </div>
+        </div>
+    </div>
+}
+<div class="bold">
+    @Html.ActionLink("Обратно към списъка", "Index")
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

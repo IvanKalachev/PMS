@@ -1,0 +1,169 @@
+﻿.PageNumberText
+{
+    font-size: 8pt;
+    font-family: Verdana;
+    padding-top: 1px;
+    margin-left: 6px;
+}
+
+.InputButtonClass
+{
+    display: block;
+    margin-top: 5px;
+    padding-top: 0 !important;
+}
+
+.ImageButtonCell
+{
+    padding: 3px;
+}
+
+.ReportToolbar INPUT, .ReportToolbar SELECT, .ReportToolbar BUTTON
+{
+    font-size: 8pt;
+    font-family: Verdana;
+}
+
+.ReportToolbar
+{
+    font-size: 8pt;
+    font-family: Verdana;
+    height: 28px;
+    border: 1px solid #4f4f4f;
+}
+
+.ReportToolbarGroup
+{
+    margin-left: 8px;
+    height: 26px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+.NormalButton, .DisabledButton
+{
+    background-color: transparent;
+    margin: 1px 1px 1px 1px;
+    border-collapse: separate !important;
+}
+
+.HoverPressedButton
+{
+    cursor: hand;
+    background-color: #99bbe2;
+    border: solid 1px #336699;
+    border-collapse: separate !important;
+}
+
+.HoverButton
+{
+    cursor: hand;
+    background-color: #ddeef7;
+    border: solid 1px #336699;
+    border-collapse: separate !important;
+}
+
+.PressedButton
+{
+    cursor: hand;
+    background-color: #ddeef7;
+    border: solid 1px #336699;
+    border-collapse: separate !important;
+}
+
+.ActiveLink
+{
+    font-size: 8pt;
+    font-family: Verdana;
+}
+
+.ActiveLink:link
+{
+    color: #3366CC;
+    text-decoration: none;
+}
+
+.ActiveLink:hover
+{
+    color: #FF3300;
+    text-decoration: underline;
+}
+
+.ActiveLink:visited
+{
+    color: #3366CC;
+    text-decoration: none;
+}
+
+.ActiveLink:visited:hover
+{
+    color: #FF3300;
+    text-decoration: underline;
+}
+
+.DisabledLink
+{
+    color: gray;
+    text-decoration: none;
+    cursor: default;
+    font-size: 8pt;
+    font-family: Verdana;
+}
+
+.WaitText
+{
+    font-family: Verdana;
+    font-weight: normal;
+    font-size: 14pt;
+}
+
+.ReportViewerSplitterBar
+{
+    background-repeat: repeat-y;
+    border-left: solid 1px #a7bac5;
+    border-right: solid 1px #2c628b;
+}
+.NormalButton .Enabled, .HoverButton .Enabled, .HoverPressedButton .Enabled, .PressedButton .Enabled
+{
+    /* DO NOT MODIFY */
+    display: inline;
+}
+
+.NormalButton .Disabled, .HoverButton .Disabled, .HoverPressedButton .Disabled, .PressedButton .Disabled
+{
+    /* DO NOT MODIFY */
+    display: none;
+}
+
+.DisabledButton .Enabled
+{
+    /* DO NOT MODIFY */
+    display: none;
+}
+
+.DisabledButton .Disabled
+{
+    /* DO NOT MODIFY */
+    display: inline;
+}
+
+.ReportAreaErrorControl
+{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: White;
+}
+
+.ReportAreaErrorLabel
+{
+    font-size: 8pt;
+    font-family: Verdana;
+    color: Gray;
+}
+
+.DocumentMapNodeStyle
+{
+    font-family: "Verdana";
+    font-size: 8pt;
+}

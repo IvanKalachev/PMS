@@ -1,0 +1,37 @@
+﻿@model IList<PropertyManagement.Core.Entities.ResMoney>
+@using PropertyManagement.Web.Helpers
+<table>
+    <tr class="unpaid_unit_charge_header">
+        <td width="56%">
+            Месец
+        </td>
+        <td width="22%">
+            Платена сума
+        </td>
+        <td width="22%">
+            Дата
+        </td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @PropertyManagement.Web.Helpers.MonthsYears.GetMonth(item.Detection.Month) @item.Detection.Year г.
+            </td>
+            <td>
+                @item.PayedSum €
+            </td>
+            <td>
+                @item.InsertDate.ToBgDate()
+            </td>
+        </tr>
+    }
+    <tr class="full_incomes_footer">
+            <td align="right">
+                Общо:
+            </td>
+            <td colspan="2">
+                @Model.Sum(x => x.PayedSum) €
+            </td>
+        </tr>
+</table>

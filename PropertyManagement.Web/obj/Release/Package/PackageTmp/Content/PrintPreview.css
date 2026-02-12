@@ -1,0 +1,290 @@
+﻿html {
+    background-color: White;
+    margin-bottom: 5px;
+    padding: 10px;
+}
+
+body {
+    background-color: White;
+    font-size: 10px;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 18px;
+}
+
+h3 {
+    font-size: 1.2em;
+}
+
+h4 {
+    font-size: 1.1em;
+}
+
+h5, h6 {
+    font-size: 1em;
+}
+
+    h5 a:link, h5 a:visited, h5 a:active {
+        padding: 0;
+        text-decoration: none;
+    }
+
+/* tables
+----------------------------------------------------------*/
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 0.75em;
+    border: 0 none;
+}
+
+th {
+    font-size: 1.2em;
+    text-align: left;
+    border: none 0px;
+    padding-left: 5px;
+    background-color:#FFCC66;
+}
+
+    th a {
+        display: block;
+        position: relative;
+    }
+
+    th a:link, th a:visited, th a:active, th a:hover {
+        color: #333;
+        font-weight: 600;
+        text-decoration: none;
+        padding: 0;
+    }
+
+    th a:hover {
+        color: #000;
+    }
+
+    th.asc a, th.desc a {
+        margin-right: .75em;
+    }
+
+    th.asc a:after, th.desc a:after {
+        display: block;
+        position: absolute;
+        right: 0em;
+        top: 0;
+        font-size: 0.75em;
+    }
+
+    th.asc a:after {
+        content: '▲';
+    }
+
+    th.desc a:after {
+        content: '▼';
+    }
+
+td {
+    padding: 0.25em 2em 0.25em 0em;
+    border: 0 none;
+}
+
+tr.pager td {
+    padding: 0 0.25em 0 0;
+}
+
+
+/* Expenses */
+
+.table_expenses
+{ 
+    display: table;
+}
+
+.row_expense 
+{ 
+    display: table-row;  
+    width:350px
+}
+
+.cell_expense_service
+{ 
+    display: table-cell;
+    width:330px;
+    padding:2px;
+}
+
+.cell_expense_sum
+{ 
+    display: table-cell;
+    width:90px;
+    padding:2px;
+}
+
+.cell_expense_options
+{ 
+    display: table-cell;
+    width:250px;
+    padding:2px;
+}
+
+/* end Expenses */
+
+.bold
+{
+    font-weight:bold;
+}
+
+.expenseDistribution
+{
+    font-weight:bold;
+    font-size:16px;
+    color:#C00000 ;
+}
+
+.expense_total
+{
+    font-weight:bold;
+    font-size:18px;
+    color:#C00000;
+}
+
+.full_incomes_footer
+{
+    /*background-color: Silver; */
+    font-weight: bold; 
+}
+
+.green
+{
+    color:Green;
+}
+
+.red
+{
+    color:#C00000 ;
+}
+
+.page_title
+{
+    font-weight:bold;
+    font-size:16px;
+    color:White;
+}
+
+.unit_unpaid_charge_header
+{
+    font-weight:bold;
+    font-size:16px;
+    background-color:#7ac0da;
+    color:White;
+}
+
+.unpaid_total
+{
+    font-weight:bold;
+    font-size:16px;
+    background-color:#7ac0da;
+    color:White;
+    padding:5px;
+    width:450px;
+    margin-top:1px;
+}
+
+.unpaid_unit_charge_header
+{
+    font-size: 14px;
+    text-align: left;
+    border: none 0px;
+    padding-left: 5px;
+    background-color:#FFCC66;
+    font-weight:bold;
+}
+
+#table_unit_charges tr
+{
+    border-bottom:#cdd3e0 solid 1px;
+}
+
+#incomes_short tr
+{
+    border-bottom:#cdd3e0 solid 1px;
+}
+
+#table_incomes_full_print tr
+{
+    border-bottom:#cdd3e0 solid 1px;
+}
+
+#detections_table tr
+{
+    border-bottom:#cdd3e0 solid 1px;
+}
+
+#expense_distribution tr
+{
+    border-bottom:#cdd3e0 solid 1px;
+}
+
+.zero_people
+{
+    background-color: #FF6699;
+}
+
+.extra_service
+{
+    color:#990066;
+}
+
+.total
+{
+    font-weight:bold;
+    font-size:12px
+}
+
+.print_footer
+{
+    margin-top:40px;
+}
+
+#print_button
+{
+    display:none;
+}
+
+.full_payment_print
+{
+    font-size:13px
+}
+
+.alterniting
+{
+    background-color: #E8E8E8 ;
+}
+
+.info_col
+{
+    border-left:#cdd3e0 solid 1px;
+}
+
+#table_incomes_short tr
+{
+    border-bottom:#cdd3e0 solid 1px;
+}
+
+#table_incomes_short
+{
+    font-size:16px;
+}
+
+#table_incomes_full_print
+{
+    font-size:14px;
+}

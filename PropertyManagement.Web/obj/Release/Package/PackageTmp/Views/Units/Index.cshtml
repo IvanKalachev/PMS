@@ -1,0 +1,125 @@
+﻿@model IEnumerable<PropertyManagement.Web.Models.UnitModel>
+
+@{
+    ViewBag.Title = "Списък с единици / апартаменти - Property Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <span class="page_title">Апартаменти</span>
+            </hgroup>
+        </div>
+    </section>
+}
+<p class="bold">
+    @Html.ActionLink("Добавяне на нов", "Create")
+</p>
+<table cellpadding="5px" id="detections_table">
+    <tr>
+        <th width="10%">
+            Ап.№
+        </th>
+        <th width="18%">
+            @Html.DisplayNameFor(model => model.FamilyName)
+        </th>
+        <th width="12%">
+            @Html.DisplayNameFor(model => model.MembersCount)
+        </th>
+        <th width="15%">
+            % идеални части
+        </th>
+        <th width="10%">
+            @Html.DisplayNameFor(model => model.Floor)
+        </th>
+        <th width="15%">
+            Баланс
+        </th>
+        <th width="20%"></th>
+       
+    </tr>
+
+@foreach (var item in Model)
+{
+    string cssClass = ""; 
+    if (item.MembersCount == 0)
+    {
+        cssClass = "zero_people";
+    }
+    else if (item.Deactivated)
+    {
+        cssClass = "unactive_unit";
+    }
+    <tr class="@cssClass">
+        <td>
+            @Html.DisplayFor(modelItem => item.Number)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FamilyName)
+        </td>
+        <td>
+
+            @Html.DisplayFor(modelItem => item.MembersCount)
+ 
+        </td>
+        <td>
+            @item.PercentIdealParts
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Floor)
+        </td>
+        <td>
+            @{string color = "";}
+            @if (item.Balance <= 0)
+            {
+                color = "green";
+            }
+            else
+            {
+                color = "red";
+            }
+
+            <span class="@color">
+                @item.Balance €
+            </span>
+        </td>
+        <td>
+            @Html.ActionLink("Промяна", "Edit", new { id = item.Id }) |
+            @* @Html.ActionLink("Details", "Details", new { id=item.Id }) | *@
+            @Html.ActionLink("Изтриване", "Delete", new { id = item.Id })
+        </td>
+    </tr>
+}
+<tr class="full_incomes_footer">
+    <td colspan="2" align="right">
+        Общо активни
+    </td>
+    <td class="bold">
+        @Model.Where(x => x.Deactivated == false).Sum(x => x.MembersCount)
+    </td>
+    <td class="bold">
+        @Model.Where(x => x.Deactivated == false).Sum(x => x.PercentIdealParts)
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+</tr>
+</table>
+<br />
+<span class="bold">Легенда:</span>
+<table>
+<tr>
+    <td class="zero_people">
+        Няма обитатели / Начислява само фонд ремонт и обновяване
+    </td>
+</tr>
+<tr>
+    <td class="unactive_unit">
+        Напуснали наематели / Неактивен в разпределяне на разходи
+    </td>
+</tr>
+</table>

@@ -1,0 +1,6 @@
+C:\Projects\PropertyManagement.Web\PropertyManagement.Security\bin\Release\PropertyManagement.Security.dll
+C:\Projects\PropertyManagement.Web\PropertyManagement.Security\bin\Release\PropertyManagement.Security.pdb
+C:\Projects\PropertyManagement.Web\PropertyManagement.Security\bin\Release\GridMvc.dll
+C:\Projects\PropertyManagement.Web\PropertyManagement.Security\obj\Release\PropertyManagement.Security.csprojResolveAssemblyReference.cache
+C:\Projects\PropertyManagement.Web\PropertyManagement.Security\obj\Release\PropertyManagement.Security.dll
+C:\Projects\PropertyManagement.Web\PropertyManagement.Security\obj\Release\PropertyManagement.Security.pdb

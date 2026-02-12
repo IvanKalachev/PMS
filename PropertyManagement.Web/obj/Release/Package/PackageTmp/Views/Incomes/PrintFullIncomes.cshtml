@@ -1,0 +1,16 @@
+﻿@model string
+
+@{
+    ViewBag.Title = "Принтиране на постъпления - Property Management";
+    Layout = "~/Views/Shared/_PrintLayout.cshtml";
+}
+
+<h2>@System.Configuration.ConfigurationManager.AppSettings["propertyName"]</h2>
+
+<h2>@ViewBag.Month</h2>
+
+<input type="submit" value="Принтирай" onclick="window.print()" id="print_button" />
+
+@Html.Raw(Model)
+
+@Html.Partial("_PrintFooter")

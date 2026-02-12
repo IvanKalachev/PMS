@@ -1,0 +1,88 @@
+﻿@model PropertyManagement.Web.Models.StatementsListModel
+@using PropertyManagement.Web.Helpers
+@{
+    ViewBag.Title = "Отчети - Property Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <span class="page_title">Отчети</span>
+            </hgroup>
+        </div>
+    </section>
+}
+
+
+<button style="margin-top: 15px" type="button"
+        onclick="location.href='@Url.Action("GenerateStatement", "Statements")'">
+   Нов отчет
+</button>
+
+@if (TempData["Error"] != null)
+{
+    <div style="background-color: burlywood; padding: 10px; border-radius: 3px; margin-top: 15px">
+        <div style="font-size: 16px">
+            @TempData["Error"]
+        </div>
+    </div>
+}
+
+@if(Model.Statements == null || !Model.Statements.Any())
+{
+    <div style="background-color: burlywood; padding: 10px; border-radius: 3px; margin-top: 15px">
+        <div style="font-size: 16px">
+            Няма генерирани отчети.
+        </div>
+    </div>
+}
+else
+{
+
+    <table width="100%" id="statements_list" style="margin-top: 30px">
+        <tr>
+            <th width="40%">
+                Месец
+            </th>
+            <th width="40%">
+                Дата на създаване
+            </th>
+            <th width="10%"></th>
+            <th width="10%"></th>
+        </tr>
+        @for (int i = 0; i < Model.Statements.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => m.Statements[i].Detection)
+                    @Html.HiddenFor(m => m.Statements[i].Id)
+                </td>
+                <td>
+                    <div>
+                        @Model.Statements[i].CreatedOn.ToBgDateTime()
+                    </div>
+                    @*@Html.DisplayFor(m => m.Statements[i].CreatedOn.ToBgDateTime())*@
+                </td>
+                <td>
+                    <div>
+                        @Html.ActionLink("Преглед", "ViewStatement", "Statements", new { statementId = Model.Statements[i].Id }, null)
+                    </div>
+                </td>
+                <td>
+                    <a  href="#" onclick="openPrintReport(@Model.Statements[i].Id)">Печат</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+
+            function openPrintReport(statementId) {
+                window.open("Statements/PrintMonthStatement?statementId=" + statementId , "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=5, width=648, height=728, toolbar=no, titlebar=no");
+            }
+
+    </script>
+}

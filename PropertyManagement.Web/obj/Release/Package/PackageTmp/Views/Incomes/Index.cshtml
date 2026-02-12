@@ -1,0 +1,301 @@
+﻿@model List<PropertyManagement.Web.Models.IncomesModel>
+@{
+    ViewBag.Title = "Постъпления - Property Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <span class="page_title">Постъпления</span>
+            </hgroup>
+        </div>
+    </section>
+}
+
+@using (Html.BeginForm("SaveIncomes", "Incomes"))
+{
+    <span class="bold">Постъпления за месец: </span>@Html.DropDownList("detectionId", (SelectList)ViewBag.DetectionsList,
+                                                new { onchange = "document.location.href = '/Incomes?detectionId='+this.options[this.selectedIndex].value;" })
+
+    if (ViewBag.DetectionHasStatement == true)
+    {
+        <div style="background-color: darkolivegreen; padding: 10px; border-radius: 3px; margin-top: 15px">
+            <div style="font-size: 16px; color: white">
+                За този отчетен период има генериран отчет, поради което не е възможно да се внасят средства.
+            </div>
+        </div>
+    }
+
+    if (Model.Count > 0)
+    {   <br />
+        <br />
+        <div class="bold">
+            <center>
+                @Html.ActionLink("Виж подробна разбивка по видове разходи", "FullIncomes", "Incomes", new { detectionId = Model.FirstOrDefault().DetectionId }, null)
+                <br />
+                @if (Model.Count > 0)
+                {
+                      <input type="submit" value="Подробен печат" onclick="openPrintReport(1)" />
+                      <input type="submit" value="Кратък печат" onclick="openPrintReport(2)" />
+                }
+            </center>
+            @*<center><a href="#" onclick="openFullIncomes(@Model.FirstOrDefault().DetectionId)">Виж подробна разбивка по видове разходи</a></center>*@
+        </div>
+        <br />
+    }
+
+    <table id="incomes_short">
+        <tr>
+            <th width="7%">
+                Ап.№
+            </th>
+            <th width="7%">
+                Собственик
+            </th>
+            <th width="9%">
+                Брой обитатели
+            </th>
+            <th width="10%">
+                % иделани части
+            </th>
+            <th width="11%">
+                Дължима сума за месеца
+            </th>
+            <th width="12%">
+                Задължения от предишни месеци
+            </th>
+            <th width="11%">
+                Платена сума за месеца (в брой)
+            </th>
+            <th width="11%">
+                Общо за плащане
+            </th>
+            @if (ViewBag.DetectionHasStatement == false)
+            {
+                <th width="12%">
+                    Внасяне на пари
+                </th>
+            }
+            <th width="16%">
+                Внесена сума за месеца (в брой)
+            </th>
+            
+        </tr>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => m[i].Unit.Number)
+                    @Html.HiddenFor(m => m[i].Unit.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => m[i].Unit.FamilyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => m[i].Unit.MembersCount)
+                </td>
+                <td>
+                    @Model[i].Unit.PercentIdealParts %
+                </td>
+                <td>
+                    <strong>@Model[i].SumToPay €</strong>
+                </td>
+                <td class="bold">
+                     @if (Model[i].PrevSaldo > 0)
+                     {
+                         <span class="red">@Model[i].PrevSaldo.ToString("0.00") €</span>
+                     }
+                     else
+                     {
+                         <span class="green">@Model[i].PrevSaldo.ToString("0.00") €</span>
+                     }
+                     
+                </td>
+                <td class="bold">
+                     @if (Model[i].PayedSum > 0)
+                     {
+                         <span class="green">@Model[i].PayedSum.ToString("0.00") €</span>
+                     }
+                     else
+                     {
+                         <span class="red">@Model[i].PayedSum.ToString("0.00") €</span>
+                     }
+                </td>
+                <td class="bold">
+                    @if (Model[i].GrandTotal > 0)
+                    {
+                         <span class="red">@Model[i].GrandTotal.ToString("0.00") €</span>
+                    }
+                    else
+                    {
+                         <span class="green">@Model[i].GrandTotal.ToString("0.00") €</span>
+                    }
+                </td>
+                @if (ViewBag.DetectionHasStatement == false)
+                {
+                    <td>
+                        <div class="numeric">
+                            @Html.EditorFor(m => m[i].VneseniPari) €
+                        </div>
+                    </td>
+                }
+                <td class="bold">
+                    @if (Model[i].ResMoney > 0)
+                    {
+                        <a title="Виж история на направените плащания за месеца" href="#" onclick="openPaymentsReport(@Model[i].Unit.Id, @Model[i].DetectionId)">@Model[i].ResMoney.ToString("0.00") €</a>
+                    }
+                    else
+                    {
+                        <span>@Model[i].ResMoney.ToString("0.00") €</span>
+                    }
+                </td>
+
+                @*<td class="bold">
+                    @if (Model[i].PayedSum > 0)
+                    {
+                        
+                    }
+                    else
+                    {
+                        <span class="red">@Model[i].RealPayedSum.ToString("0.00") €</span>
+                    }
+                </td>
+                <td class="bold"> 
+                    @if (Model[i].Saldo > 0)
+                    {
+                        <span class="red">@Model[i].Saldo €</span>
+                    }
+                    else
+                    {
+                        <span>@Model[i].Saldo €</span>
+                    }  
+                </td>
+                <td>
+                    <div class="numeric">
+                        @Html.EditorFor(m => m[i].VneseniPari) €
+                    </div>
+                </td>
+                <td>
+                   x
+                </td>*@
+            </tr>
+        }
+        <tr class="full_incomes_footer">
+           <td>
+           </td>
+           <td>
+           </td>
+           <td>
+              @Model.Sum(x => x.Unit.MembersCount)
+           </td>
+           <td>
+              @Model.Sum(x => x.Unit.PercentIdealParts) %
+           </td>
+           <td>
+              @Model.Sum(x => x.SumToPay).ToString("0.00") €
+           </td>
+           <td>
+              @Model.Sum(x => x.PrevSaldo).ToString("0.00") €
+           </td>
+           <td>
+              @Model.Sum(x => x.PayedSum).ToString("0.00") €
+           </td>
+           <td>
+              @Model.Sum(x => x.GrandTotal).ToString("0.00") €
+           </td>
+            @if (ViewBag.DetectionHasStatement == false)
+            {
+                <td>
+                </td>
+            }
+           <td>
+               @Model.Sum(x => x.ResMoney).ToString("0.00") €
+           </td>
+        </tr>
+    </table>
+    <br />
+        if (Model.Count > 0 && ViewBag.DetectionHasStatement == false)
+        {
+        <input type="Submit" value="Запис" />
+        }
+}
+<br />
+<table cellpadding="10px">
+    <tr>
+        <th>
+            Общо постъпления
+        </th>
+        <th>
+            Планирани
+        </th>
+        <th>
+            Получени
+        </th>
+    </tr>
+    <tr class="full_incomes_footer">
+        <td>
+            Вноски живущи
+        </td>
+        <td>
+            @Model.Sum(x => x.SumToPay) €
+        </td>
+        <td>
+            @Model.Sum(x => x.PayedSum) €
+        </td>
+    </tr>
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("input:text")
+            .focus(function () { $(this).select(); })
+            .mouseup(function (e) { e.preventDefault(); });
+
+            $("input:text").focusout(function () {
+                var inputValue = $(this).val();
+                console.log(inputValue);
+                var currentTotal = $("#real_payed").text();
+                if(inputValue.indexOf(",") != -1)
+                {
+                    alert("Въвели сте невалидна стойност. Моля, използвайте . вместо ,");
+                    console.log("immmm");
+                }
+                else
+                {
+                    var newTotal = parseFloat(inputValue) + parseFloat(currentTotal);
+                    $("#real_payed").text(newTotal.toFixed(2));
+                    console.log(currentTotal);
+                }
+            });
+
+        });
+
+        function openFullIncomes(detectionId) {
+            window.open("Incomes/FullIncomes?detectionId=" + detectionId, "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=5, width=1024, height=768, toolbar=no, titlebar=no");
+        }
+
+        function openPrintReport(type) {
+            var url = "";
+            if(type == 1)
+            {
+                url="PrintFullIncomes";
+            }
+            else if(type == 2)
+            {
+                url="PrintShortIncomes";
+            }
+
+            window.open("Incomes/" + url + "?detectionId=" + @ViewBag.DetectionId, "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=5, width=1460, height=1024, toolbar=no, titlebar=no");
+        }
+
+        function openPaymentsReport(unitId, detectionId) {
+            window.open("Reports/PrintUnitPayments?unitId=" + unitId + "&fromDet=" + detectionId + "&toDet=" + detectionId, "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=5, width=648, height=728, toolbar=no, titlebar=no");
+        }
+
+    </script>
+}

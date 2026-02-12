@@ -1,0 +1,108 @@
+﻿@model PropertyManagement.Web.Models.StatisticsModel
+
+@{
+    ViewBag.Title = "Статистика - Property Management";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <span class="page_title">Актуално състояние към месец @ViewBag.Month</span>
+            </hgroup>
+        </div>
+    </section>
+}
+
+<div id="parent">
+
+<div id="left_div">
+
+    <table cellpadding="10px" width="350px">
+    <th colspan="3">
+        Апартаменти с неплатени сметки
+    </th>
+    @for (int i = 0; i < Model.UnitsWithCharges.Count; i++)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(x => x.UnitsWithCharges[i].Number)
+            </td>
+            <td>
+                @Html.ActionLink(Model.UnitsWithCharges[i].FamilyName, "ViewUnitUnpaidCharges", "Home", new { unitId = Model.UnitsWithCharges[i].Id}, new { @class = "bold" })
+            </td>
+            <td>
+                <span class="red">@Model.UnitsWithCharges[i].Balance €</span>
+            </td>
+        </tr>
+    }
+    <tr class="full_incomes_footer">
+           <td colspan="2" align="right">
+                Общо:
+            </td>
+            <td>
+                <span class="red">@Model.UnitsWithCharges.Sum(x => x.Balance) €</span>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table cellpadding="10px" width="350px">
+     <tr>
+        <th colspan="3">
+            Апартаменти с предплатени суми
+        </th>
+     </tr>
+     @for (int i = 0; i < Model.UnitsWithPositiveSaldo.Count; i++)
+     {
+        <tr>
+            <td>
+                @Html.DisplayFor(x => x.UnitsWithPositiveSaldo[i].Number)
+            </td>
+            <td class = "bold">
+                @Html.DisplayFor(x => x.UnitsWithPositiveSaldo[i].FamilyName)
+            </td>
+            <td>
+                @{decimal balance = -1 * Model.UnitsWithPositiveSaldo[i].Balance;}
+                <span class="green">@balance €</span>
+            </td>
+        </tr>
+     }
+     <tr class="full_incomes_footer">
+            <td colspan="2" align="right">
+                Общо:
+            </td>
+            <td>
+                @{decimal total = (Model.UnitsWithPositiveSaldo.Sum(x => x.Balance) * -1);}
+                <span class="green">@total €</span>
+            </td>
+        </tr>
+    </table>
+     </table>
+</div>
+
+<div id="right_div">
+    <table cellpadding="10px" width="400px">
+        <tr>
+            <th colspan="2">
+                Баланс на обща сметка
+            </th>
+        </tr>
+        <tr class="full_incomes_footer">
+            <td>
+                &nbsp;Текуща наличност:
+            </td>
+           <td>
+            @if (Model.TotalSaldo > 0)
+            {
+                <span class="green">@Model.SaldoTo2025.ToString("0.00") + @Model.Saldo.ToString("0.00") = @Model.TotalSaldo.ToString("0.00") €</span>
+            }
+            else
+            {
+                <span class="red">@Model.SaldoTo2025 + @Model.Saldo.ToString("0.00") = @Model.TotalSaldo.ToString("0.00") €</span>
+            }
+              
+           </td>
+        </tr>
+    </table>
+</div>
+
+</div>

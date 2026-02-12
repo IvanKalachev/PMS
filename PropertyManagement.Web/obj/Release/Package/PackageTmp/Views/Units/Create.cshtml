@@ -1,0 +1,75 @@
+﻿@model PropertyManagement.Web.Models.UnitModel
+
+@{
+    ViewBag.Title = "Въвеждане на единица / апартамент - Property Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <span class="page_title">Апартаменти - добавяне нов</span>
+            </hgroup>
+        </div>
+    </section>
+}
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Добавяне</legend>
+        <br />
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FamilyName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FamilyName)
+            @Html.ValidationMessageFor(model => model.FamilyName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Number)
+        </div>
+        <div class="numeric">
+            @Html.EditorFor(model => model.Number)
+            @Html.ValidationMessageFor(model => model.Number)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MembersCount)
+        </div>
+        <div class="numeric">
+            @Html.EditorFor(model => model.MembersCount)
+            @Html.ValidationMessageFor(model => model.MembersCount)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PercentIdealParts)
+        </div>
+        <div class="numeric">
+            @Html.EditorFor(model => model.PercentIdealParts)
+            @Html.ValidationMessageFor(model => model.PercentIdealParts)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Floor)
+        </div>
+        <div class="numeric">
+            @Html.EditorFor(model => model.Floor)
+            @Html.ValidationMessageFor(model => model.Floor)
+        </div>
+
+        <p>
+            <input type="submit" value="Запис" />
+        </p>
+    </fieldset>
+}
+
+<div class="bold">
+    @Html.ActionLink("Обратно към списъка", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
